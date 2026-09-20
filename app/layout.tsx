@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Nunito_Sans } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const nunitoSans = Nunito_Sans({
-  variable: "--font-nunito-sans",
+const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -15,8 +14,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${nunitoSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className="h-full">
+      <body className={`${roboto.className} min-h-full flex flex-col`}>
+        {children}
+      </body>
     </html>
   );
 }

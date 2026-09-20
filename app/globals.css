@@ -2,59 +2,68 @@
 
 :root {
   /* ── Primary Brand ── */
-  --neu-green:          #02644A;   /* primary CTA, logo accent */
-  --neu-green-hover:    #00916A;   /* hover / active states */
-  --neu-emerald:        #10B981;   /* icon highlights, badges */
-  --neu-emerald-light:  #D1FAE5;   /* soft backgrounds, tags */
+  --neu-green: #02644a; /* primary CTA, logo accent */
+  --neu-green-hover: #00916a; /* hover / active states */
+  --neu-emerald: #10b981; /* icon highlights, badges */
+  --neu-emerald-light: #d1fae5; /* soft backgrounds, tags */
 
   /* ── UI Surface ── */
-  --neu-white:          #FFFFFF;
-  --neu-gray-50:        #F8FAFC;
-  --neu-gray-100:       #F1F5F9;
-  --neu-gray-200:       #E2E8F0;
-  --neu-gray-300:       #CBD5E1;
-  --neu-gray-500:       #64748B;
-  --neu-gray-600:       #475569;
-  --neu-gray-700:       #334155;
-  --neu-gray-800:       #1E293B;   /* nav background via-slate-800 */
-  --neu-gray-900:       #0F172A;   /* footer background */
+  --neu-white: #ffffff;
+  --neu-gray-50: #f8fafc;
+  --neu-gray-100: #f1f5f9;
+  --neu-gray-200: #e2e8f0;
+  --neu-gray-300: #cbd5e1;
+  --neu-gray-500: #64748b;
+  --neu-gray-600: #475569;
+  --neu-gray-700: #334155;
+  --neu-gray-800: #1e293b; /* nav background via-slate-800 */
+  --neu-gray-900: #0f172a; /* footer background */
 
   /* ── Nav Gradient ── */
-  --neu-nav-from:       #0F172A;   /* from-slate-900 */
-  --neu-nav-via:        #1E293B;   /* via-slate-800 */
-  --neu-nav-to:         #0F172A;   /* to-slate-900 */
+  --neu-nav-from: #0f172a; /* from-slate-900 */
+  --neu-nav-via: #1e293b; /* via-slate-800 */
+  --neu-nav-to: #0f172a; /* to-slate-900 */
 
   /* ── Accent / Status ── */
-  --neu-indigo:         #6366F1;   /* notice board accent */
-  --neu-blue-light:     #EFF6FF;   /* stat icon bg */
-  --neu-red:            #DC2626;   /* important notice */
-  --neu-yellow:         #CA8A04;   /* on-leave badge */
-  --neu-purple:         #9333EA;   /* ex-chairman badge */
+  --neu-indigo: #6366f1; /* notice board accent */
+  --neu-blue-light: #eff6ff; /* stat icon bg */
+  --neu-red: #dc2626; /* important notice */
+  --neu-yellow: #ca8a04; /* on-leave badge */
+  --neu-purple: #9333ea; /* ex-chairman badge */
 
   /* ── Typography ── */
   --neu-font-sans: var(--font-nunito-sans);
 
   /* ── Spacing Scale ── */
-  --neu-radius-sm:  0.5rem;
-  --neu-radius-md:  0.75rem;
-  --neu-radius-lg:  1rem;
-  --neu-radius-xl:  1.5rem;
+  --neu-radius-sm: 0.5rem;
+  --neu-radius-md: 0.75rem;
+  --neu-radius-lg: 1rem;
+  --neu-radius-xl: 1.5rem;
   --neu-radius-2xl: 1.75rem;
 
   /* ── Shadow ── */
-  --neu-shadow-card: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.05);
-  --neu-shadow-nav:  0 4px 24px rgba(0,0,0,.25);
-  --neu-shadow-lg:   0 10px 40px rgba(2,100,74,.15);
+  --neu-shadow-card:
+    0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.05);
+  --neu-shadow-nav: 0 4px 24px rgba(0, 0, 0, 0.25);
+  --neu-shadow-lg: 0 10px 40px rgba(2, 100, 74, 0.15);
 }
 
 /* ── Base Reset ── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
   font-family: var(--neu-font-sans);
+}
+
+@media (min-width: 768px) {
+  html {
+    overscroll-behavior-y: none;
+  }
 }
 
 body {
@@ -65,7 +74,15 @@ body {
 }
 
 /* ── Utility: brand color classes ── */
-.bg-neu-green         { background-color: var(--neu-green); }
-.bg-neu-green-hover   { background-color: var(--neu-green-hover); }
-.text-neu-green       { color: var(--neu-green); }
-.border-neu-green     { border-color: var(--neu-green); }
+.bg-neu-green {
+  background-color: var(--neu-green);
+}
+.bg-neu-green-hover {
+  background-color: var(--neu-green-hover);
+}
+.text-neu-green {
+  color: var(--neu-green);
+}
+.border-neu-green {
+  border-color: var(--neu-green);
+}

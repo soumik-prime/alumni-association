@@ -1,10 +1,3 @@
-// Suggested location: components/layout/Footer.tsx
-// Requires: next, lucide-react (npm i lucide-react)
-// Colors reference your global.css variables directly via inline style /
-// var(--neu-...), since only bg-neu-green / bg-neu-green-hover /
-// text-neu-green / border-neu-green exist as real Tailwind utilities.
-// Background uses --neu-gray-900, which your own CSS comments mark as the
-// footer background color.
 
 import Link from "next/link";
 import { GraduationCap, Mail } from "lucide-react";

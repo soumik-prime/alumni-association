@@ -3,12 +3,10 @@
 export default function Home() {
   return (
     <>
-      <main className="">
-        Home Page
-      </main>
-      <footer>
-        footer
-      </footer>
+      <div className="border h-96 my-2"></div>
+      <div className="border h-96 my-2"></div>
+      <div className="border h-96 my-2"></div>
+      <div className="border h-96 my-2"></div>
     </>
   );
 }
