@@ -10,6 +10,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ExternalLinkIcon } from "lucide-react";
 
+const logoPath = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/university-logo.png`;
+
 export default function TopBar() {
   return (
     <div className="w-full bg-white py-2 mt-1">
@@ -19,7 +21,7 @@ export default function TopBar() {
             (nesting <a> inside <a> is invalid HTML and breaks hydration) */}
         <div className="flex items-center gap-2.5">
           <Image
-            src="/university-logo.png"
+            src={logoPath}
             alt="Alumni Association Logo"
             width={64}
             height={64}
