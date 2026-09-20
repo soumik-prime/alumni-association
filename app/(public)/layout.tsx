@@ -8,10 +8,11 @@ export default function PublicLayout({
 }) {
   return (
     <>
-			<Header />
-      <main className="flex-1">{children}</main>
+      <Header />
+      <main id="main-content" className="flex-1" aria-label="Main content">
+        {children}
+      </main>
       <Footer />
     </>
   );
 }
-	
