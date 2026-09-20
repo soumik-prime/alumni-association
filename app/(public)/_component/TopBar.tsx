@@ -16,6 +16,7 @@ export default function TopBar() {
           width={80}
           height={80}
           priority
+          unoptimized
           className="h-16 w-auto shrink-0 sm:h-20 md:h-20"
         />
 
