@@ -4,19 +4,16 @@ import { ExternalLinkIcon } from "lucide-react";
 import { ContactLink } from "./ContactLink";
 import { MobileNav } from "./navigation/MobileNav";
 
-const logoPath = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/university-logo.png`;
-
 export default function TopBar() {
   return (
     <div className="relative mx-auto flex items-center justify-between gap-3 border-b border-gray-200/50 px-4 py-2 pr-16 md:py-4 md:pr-6 sm:px-6">
       <div className="flex min-w-0 gap-3 sm:gap-6">
         <Image
-          src={logoPath}
+          src="/university-logo.png"
           alt="Netrokona University Logo"
           width={80}
           height={80}
           priority
-          unoptimized
           className="h-16 w-auto shrink-0 sm:h-20 md:h-20"
         />
 

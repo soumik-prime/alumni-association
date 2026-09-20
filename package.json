@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "preview": "pnpm build && pnpm dlx serve@latest out",
     "lint": "eslint",
     "postinstall": "prisma skills sync || exit 0"
   },
