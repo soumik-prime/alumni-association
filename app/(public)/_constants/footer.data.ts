@@ -1,8 +1,8 @@
 import { Mail } from "lucide-react";
 
-import FacebookIcon from "../_component/ui/FacebookIcon";
-import LinkedinIcon from "../_component/ui/LinkedinIcon";
-import GithubIcon from "../_component/ui/GithubIcon";
+import FacebookIcon from "../_components/ui/FacebookIcon";
+import LinkedinIcon from "../_components/ui/LinkedinIcon";
+import GithubIcon from "../_components/ui/GithubIcon";
 
 import type {
   FooterContactInfo,
