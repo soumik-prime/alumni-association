@@ -62,9 +62,7 @@ export const CONTACT_INFO: FooterContactInfo = {
     "Netrokona, Bangladesh",
   ],
   phone: "+880 15xxxxxxxx",
-  phoneHref: "tel:",
-  email: "csealumni@neu.ac.bd",
-  emailHref: "#",
+  email: "csealumni@neu.xx.xx",
 };
 
 export const DEVELOPER: FooterDeveloper = {

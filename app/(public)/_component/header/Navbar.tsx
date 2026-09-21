@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { NAV_LINKS } from "../../_constants/navigation";
+import { HEADER_UI, NAV_LINKS } from "../../_constants/header.data";
 import { isActive } from "../../_lib/navigation";
 
 export default function Navbar() {
@@ -43,7 +43,7 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      aria-label="Main"
+      aria-label={HEADER_UI.mainNavigationLabel}
       className="relative py-0.5 hidden border-b border-gray-200/50 bg-white/80 backdrop-blur md:sticky md:top-0 md:z-30 md:flex md:w-full md:items-center md:justify-center md:gap-4"
       onMouseLeave={() => activeIndex !== -1 && moveIndicatorTo(activeIndex)}
     >

@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS } from "../../_constants/navigation";
+import { HEADER_UI, NAV_LINKS } from "../../_constants/header.data";
 import { isActive } from "../../_lib/navigation";
-import { ContactLink } from "../ContactLink";
+import { ContactLink } from "./ContactLink";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -46,7 +46,7 @@ export function MobileNav() {
         ref={buttonRef}
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        aria-label="Toggle navigation menu"
+        aria-label={HEADER_UI.toggleNavigationLabel}
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
         className="absolute right-4 top-1/2 z-50 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center text-gray-700 transition-all duration-200 hover:bg-[#eff6f5] hover:text-[#268b81] md:hidden"
@@ -77,7 +77,7 @@ export function MobileNav() {
         id="mobile-nav-panel"
         role="dialog"
         aria-modal="true"
-        aria-label="Site navigation"
+        aria-label={HEADER_UI.mobileNavigationLabel}
         aria-hidden={!open}
         inert={!open}
         className={`fixed inset-y-0 right-0 z-50 flex w-[80vw] max-w-xs flex-col bg-white shadow-2xl transition-transform duration-300 ease-out md:hidden ${
@@ -85,11 +85,11 @@ export function MobileNav() {
         }`}
       >
         <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-          <span className="text-sm font-semibold text-gray-900">Menu</span>
+          <span className="text-sm font-semibold text-gray-900">{HEADER_UI.mobileMenuLabel}</span>
           <button
             type="button"
             onClick={close}
-            aria-label="Close navigation menu"
+            aria-label={HEADER_UI.closeNavigationLabel}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-[#eff6f5] hover:text-[#268b81]"
           >
             <X className="h-5 w-5" />
