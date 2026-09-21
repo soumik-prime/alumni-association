@@ -15,9 +15,7 @@ export interface FooterSocialItem {
 export interface FooterContactInfo {
   addressLines: readonly string[];
   phone: string;
-  phoneHref: string;
   email: string;
-  emailHref: string;
 }
 
 export interface FooterDeveloper {

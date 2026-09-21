@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogIn } from "lucide-react";
 
 import FooterTitle from "./FooterTitle";
 import type { FooterSocialItem } from "../../_types/footer.types";
@@ -14,8 +15,7 @@ export default function FooterConnect({ socials }: FooterConnectProps) {
 
       <div className="mt-6">
         <p className="max-w-sm text-[15px] leading-6 text-slate-500">
-          Stay connected with the CSE community and follow our latest
-          updates.
+          Stay connected with the CSE community and follow our latest updates.
         </p>
 
         <div className="mt-2 flex gap-3">
@@ -52,20 +52,29 @@ export default function FooterConnect({ socials }: FooterConnectProps) {
         <Link
           href="/login"
           className="
-            group mt-4 flex h-12 w-full items-center justify-center
-            overflow-hidden rounded-lg
-            bg-(--neu-green)
-            px-5
-            text-sm font-semibold text-gray-50
-            transition-all duration-200
-            hover:bg-(--neu-green-hover)
-            hover:shadow-[0_8px_20px_-8px_var(--neu-green)]
-            leading-tight
-          "
+    group mt-6 flex h-11 w-full items-center justify-center gap-2.5
+    rounded-lg
+    border border-(--neu-green)/35
+    bg-(--neu-green)/8
+    text-sm font-semibold text-slate-300
+    shadow-inner shadow-white/2
+    transition-all duration-200
+    hover:border-(--neu-emerald)/60
+    hover:bg-(--neu-green)/[0.14]
+    hover:text-white
+  "
         >
-          <span className="transition-transform duration-200 group-hover:translate-x-0.5">
-            Community Portal →
-          </span>
+          <LogIn
+            className="
+      h-4 w-4
+      text-(--neu-emerald)/80
+      transition-transform duration-200
+      group-hover:translate-x-0.5
+    "
+            strokeWidth={1.8}
+          />
+
+          <span>Community Portal</span>
         </Link>
       </div>
     </div>

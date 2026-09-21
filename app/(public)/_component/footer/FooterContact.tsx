@@ -27,7 +27,7 @@ export default function FooterContact({ info }: FooterContactProps) {
         </div>
 
         <a
-          href={info.phoneHref}
+          href={`tel:${info.phone}`}
           className="
             flex items-center gap-4
             text-slate-400
@@ -40,7 +40,7 @@ export default function FooterContact({ info }: FooterContactProps) {
         </a>
 
         <a
-          href={info.emailHref}
+          href={`mailto:${info.email}`}
           className="
             flex items-center gap-4
             text-slate-400
