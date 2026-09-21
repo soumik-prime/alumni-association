@@ -60,12 +60,6 @@ html {
   font-family: var(--neu-font-sans);
 }
 
-@media (min-width: 768px) {
-  html {
-    overscroll-behavior-y: none;
-  }
-}
-
 body {
   background-color: var(--neu-gray-100);
   color: var(--neu-gray-800);
@@ -85,4 +79,15 @@ body {
 }
 .border-neu-green {
   border-color: var(--neu-green);
+}
+
+@media (min-width: 768px) {
+  html {
+    overscroll-behavior-y: none;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

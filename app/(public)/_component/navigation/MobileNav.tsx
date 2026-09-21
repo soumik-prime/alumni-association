@@ -16,7 +16,7 @@ export function MobileNav() {
 
   const close = () => setOpen(false);
 
-  // Close on Escape, return focus to the toggle
+
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {

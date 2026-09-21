@@ -1,4 +1,4 @@
-import Footer from "./_component/Footer";
+import Footer from "./_component/footer/Footer";
 import Header from "./_component/Header";
 
 export default function PublicLayout({
