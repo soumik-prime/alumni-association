@@ -26,6 +26,7 @@ export default function Footer() {
             <>
               Department of Computer Science & Engineering
               <br className="sm:hidden" /> · Netrokona University, Netrokona,
+                        <br className="sm:hidden" /> Netrokona University, Netrokona,
               Bangladesh
             </>
           }

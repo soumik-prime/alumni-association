@@ -86,8 +86,38 @@ body {
     overscroll-behavior-y: none;
   }
 }
-
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes site-ticker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-site-ticker {
+  animation: site-ticker 330s linear infinite;
+  will-change: transform;
+}
+
+.animate-site-ticker:hover,
+.animate-site-ticker:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-site-ticker {
+    animation: none;
+  }
 }
