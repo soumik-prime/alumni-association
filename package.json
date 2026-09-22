@@ -7,6 +7,12 @@
     "build": "pnpm prisma generate && pnpm next build",
     "start": "next start",
     "lint": "eslint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev && prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:status": "prisma migrate status",
+    "prisma:validate": "prisma validate",
+    "prisma:format": "prisma format",
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {

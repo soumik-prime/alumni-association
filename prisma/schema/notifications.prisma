@@ -1,0 +1,28 @@
+enum NotificationType {
+  INFO         @map("Info")
+  WARNING      @map("Warning")
+  ANNOUNCEMENT @map("Announcement")
+  EVENT        @map("Event")
+  NOTICE       @map("Notice")
+  DEVELOPMENT  @map("Development")
+  MAINTENANCE  @map("Maintenance")
+  TESTING      @map("Testing")
+
+  @@map("notification_type")
+}
+
+model SiteNotification {
+  id            String           @id @default(uuid())
+  type          NotificationType? @default(INFO)
+  message       String           @db.VarChar(160)
+  active        Boolean          @default(true)
+  startsAt      DateTime?        @map("starts_at")
+  expiresAt     DateTime?        @map("expires_at")
+  createdBy     String           @map("created_by")
+  createdByUser User             @relation("CreatedNotifications", fields: [createdBy], references: [id])
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  @@index([createdBy])
+  @@map("site_notifications")
+}

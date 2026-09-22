@@ -1,0 +1,58 @@
+enum PublicationType {
+  JOURNAL
+  CONFERENCE
+  BOOK_CHAPTER
+  THESIS
+  OTHER
+
+  @@map("publication_type")
+}
+
+enum PublicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  PUBLISHED
+  REJECTED
+
+  @@map("publication_status")
+}
+
+model Publication {
+  id            String            @id @default(uuid())
+  title         String
+  abstract      String?
+  type          PublicationType
+  venue         String?
+  doi           String?           @unique
+  externalUrl   String?           @map("external_url")
+  publishedYear Int?              @map("published_year")
+  status        PublicationStatus @default(DRAFT)
+  addedById     String            @map("added_by_id")
+  addedBy       User              @relation(fields: [addedById], references: [id])
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+
+  authors PublicationAuthor[]
+
+  @@index([publishedYear, status])
+  @@index([addedById])
+  @@map("publications")
+}
+
+model PublicationAuthor {
+  publicationId String      @map("publication_id")
+  publication   Publication @relation(fields: [publicationId], references: [id])
+  // Nullable: a co-author who isn't a student/alumnus in the system yet —
+  // captured via externalName instead.
+  studentId     String?     @map("student_id")
+  student       Profile?    @relation(fields: [studentId], references: [id])
+  authorOrder   Int         @map("author_order")
+  externalName  String?     @map("external_name")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@id([publicationId, authorOrder])
+  @@index([studentId])
+  @@map("publication_authors")
+}

@@ -1,0 +1,74 @@
+enum PermissionCategory {
+  SYSTEM           @map("System")
+  USER_MANAGEMENT  @map("User Management")
+  PROFILE          @map("Profile")
+  NOTIFICATIONS    @map("Notifications")
+  PUBLICATIONS     @map("Publications")
+  OTHER            @map("Other")
+
+  @@map("permission_category")
+}
+
+model Permission {
+  id          String  @id @default(uuid())
+  key         String  @unique @db.VarChar(100)
+  description String? @db.VarChar(160)
+  category    PermissionCategory
+
+  userPermissions UserPermission[]
+  groupItems      PermissionGroupItem[]
+
+  @@index([category])
+  @@map("permissions")
+}
+
+model UserPermission {
+  id           String     @id @default(uuid())
+  userId       String     @map("user_id")
+  user         User       @relation("UserPermissions", fields: [userId], references: [id], onDelete: Cascade)
+  permissionId String     @map("permission_id")
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  grantedById  String?    @map("granted_by_id")
+  grantedBy    User?      @relation("GrantedPermissions", fields: [grantedById], references: [id], onDelete: SetNull)
+  grantedAt    DateTime   @default(now()) @map("granted_at")
+  expireAt     DateTime?  @map("expire_at")
+
+  @@unique([userId, permissionId])
+  @@index([grantedById])
+  @@index([permissionId])
+  @@map("user_permissions")
+}
+
+model PermissionGroup {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String  @db.VarChar(160)
+
+  permissionItems PermissionGroupItem[]
+  userGroups      UserPermissionGroup[]
+
+  @@map("permission_groups")
+}
+
+model PermissionGroupItem {
+  groupId      String          @map("group_id")
+  group        PermissionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  permissionId String          @map("permission_id")
+  permission   Permission      @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, permissionId])
+  @@index([permissionId])
+  @@map("permission_group_items")
+}
+
+model UserPermissionGroup {
+  userId    String          @map("user_id")
+  user      User            @relation("UserGroups", fields: [userId], references: [id], onDelete: Cascade)
+  groupId   String          @map("group_id")
+  group     PermissionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  grantedAt DateTime        @default(now()) @map("granted_at")
+
+  @@id([userId, groupId])
+  @@index([groupId])
+  @@map("user_permission_groups")
+}

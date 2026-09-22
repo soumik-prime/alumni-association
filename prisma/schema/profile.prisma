@@ -1,0 +1,63 @@
+enum BloodGroup {
+  A_POSITIVE  @map("A+")
+  A_NEGATIVE  @map("A-")
+  B_POSITIVE  @map("B+")
+  B_NEGATIVE  @map("B-")
+  AB_POSITIVE @map("AB+")
+  AB_NEGATIVE @map("AB-")
+  O_POSITIVE  @map("O+")
+  O_NEGATIVE  @map("O-")
+
+  @@map("blood_group")
+}
+
+enum Gender {
+  MALE   @map("M")
+  FEMALE @map("F")
+
+  @@map("gender")
+}
+
+model Profile {
+  id    String @id @default(uuid())
+  regNo String @unique @map("reg_no") @db.VarChar(9)
+
+  name           String
+  batch          Int
+  session        String @db.VarChar(7)
+  graduationYear Int?   @map("graduation_year") @db.SmallInt
+
+  photo         String?
+  bio           String?
+  gender        Gender?
+  bloodGroup    BloodGroup? @map("blood_group")
+  email         String?
+  facebook      String?
+  github        String?
+  linkedin      String?
+  googleScholar String?     @map("google_scholar")
+  portfolio     String?
+
+  presentAddressId   String?  @map("present_address_id")
+  presentAddress     Address? @relation("PresentAddress", fields: [presentAddressId], references: [id])
+  permanentAddressId String?  @map("permanent_address_id")
+  permanentAddress   Address? @relation("PermanentAddress", fields: [permanentAddressId], references: [id])
+
+  sscInstitutionId String?      @map("ssc_institution_id")
+  sscInstitution   Institution? @relation("SscInstitution", fields: [sscInstitutionId], references: [id])
+
+  hscInstitutionId String?      @map("hsc_institution_id")
+  hscInstitution   Institution? @relation("HscInstitution", fields: [hscInstitutionId], references: [id])
+
+  visible   Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  workExperiences    WorkExperience[]
+  publicationAuthors PublicationAuthor[]
+  higherStudies      HigherStudy[]
+  user               User?
+
+  @@index([batch])
+  @@map("profiles")
+}

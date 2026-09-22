@@ -1,0 +1,74 @@
+enum Industry {
+  SOFTWARE                @map("Software")
+  IT_SERVICES             @map("IT Services")
+  ARTIFICIAL_INTELLIGENCE @map("Artificial Intelligence")
+  CYBERSECURITY           @map("Cybersecurity")
+  CLOUD_COMPUTING         @map("Cloud Computing")
+  BLOCKCHAIN_WEB3         @map("Blockchain / Web3")
+  GAME_DEVELOPMENT        @map("Game Development")
+  EMBEDDED_IOT            @map("Embedded / IoT")
+  ROBOTICS_AUTOMATION     @map("Robotics & Automation")
+  TELECOM                 @map("Telecom")
+  FINTECH                 @map("Fintech")
+  BANKING_FINANCE         @map("Banking & Finance")
+  ECOMMERCE               @map("E-commerce")
+  EDUCATION               @map("Education")
+  RESEARCH_ACADEMIA       @map("Research & Academia")
+  GOVERNMENT              @map("Government")
+  HEALTHCARE              @map("Healthcare")
+  CONSULTING              @map("Consulting")
+  STARTUP                 @map("Startup")
+  MANUFACTURING           @map("Manufacturing")
+  OTHER                   @map("Other")
+
+  @@map("industry")
+}
+
+enum EmploymentType {
+  FULL_TIME              @map("Full-time")
+  PART_TIME              @map("Part-time")
+  INTERNSHIP             @map("Internship")
+  CONTRACT               @map("Contract")
+  FREELANCE              @map("Freelance")
+  SELF_EMPLOYED          @map("Self-employed")
+  TEMPORARY              @map("Temporary")
+  APPRENTICESHIP         @map("Apprenticeship")
+  RESEARCH_ASSISTANTSHIP @map("Research Assistantship")
+  TEACHING_ASSISTANTSHIP @map("Teaching Assistantship")
+  VOLUNTEER              @map("Volunteer")
+  OTHER                  @map("Other")
+
+  @@map("employment_type")
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  industry  Industry
+  website   String?  @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  workExperiences WorkExperience[]
+
+  @@map("companies")
+}
+
+model WorkExperience {
+  id             String         @id @default(uuid())
+  studentId      String         @map("student_id")
+  student        Profile         @relation(fields: [studentId], references: [id])
+  companyId      String         @map("company_id")
+  company        Company        @relation(fields: [companyId], references: [id])
+  careerField    String?        @map("career_field")
+  title          String         @db.VarChar(255)
+  employmentType EmploymentType @map("employment_type")
+  startDate      DateTime       @map("start_date")
+  endDate        DateTime?      @map("end_date")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  @@index([studentId])
+  @@index([companyId])
+  @@map("work_experiences")
+}

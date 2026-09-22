@@ -1,0 +1,26 @@
+model Country {
+  iso2      String   @id @db.VarChar(2)
+  name      String
+  flag       String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  addresses Address[]
+
+  @@map("countries")
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  city      String   @db.VarChar(100)
+  iso2      String   @db.VarChar(2)
+  country   Country  @relation(fields: [iso2], references: [iso2], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  presentFor   Profile[] @relation("PresentAddress")
+  permanentFor Profile[] @relation("PermanentAddress")
+
+  @@index([iso2])
+  @@map("addresses")
+}

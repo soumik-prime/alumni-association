@@ -24,9 +24,8 @@ export default function Footer() {
           title="CSE Alumni Association"
           tagline={
             <>
-              Department of Computer Science & Engineering
-              <br className="sm:hidden" /> · Netrokona University, Netrokona,
-                        <br className="sm:hidden" /> Netrokona University, Netrokona,
+              Department of Computer Science & Engineering,
+              <br className="sm:hidden" /> Netrokona University, Netrokona,
               Bangladesh
             </>
           }
