@@ -8,11 +8,13 @@
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
+    "prisma:seed": "tsx scripts/seed.ts",
     "prisma:migrate": "prisma migrate dev && prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:migrate:status": "prisma migrate status",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
+    "prisma:studio": "prisma studio",
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
