@@ -8,7 +8,7 @@ export const HEADER_CONTACT = {
 export const HEADER_BRAND = {
   logoSrc: "/university-logo.png",
   logoAlt: "Netrokona University Logo",
-  homeLabel: "Alumni Association",
+  homeLabel: "CSE Alumni Association",
   departmentHref: "https://cse.neu.ac.bd",
   departmentLabel: "Department of",
   departmentShortLabel: "CSE",
@@ -28,8 +28,10 @@ export const HEADER_UI = {
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/directory", label: "Students & Alumni" },
-  { href: "/batches", label: "Batches" },
-  { href: "/statistics", label: "Statistics" },
+  { href: "/blogs", label: "Blogs" },
   { href: "/publications", label: "Publications" },
+  { href: "/statistics", label: "Statistics" },
   { href: "/about", label: "About" },
+  { href: "/dashboard", label: "Dashboard" },
+  // { href: "/profile/me", label: "👤 My Profile" },
 ] as const satisfies readonly HeaderNavLink[];

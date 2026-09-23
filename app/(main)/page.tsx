@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home",
+  // title: "Home",
   description:
     "Join the Netrokona University CSE alumni community, explore graduate profiles, and stay connected with your department network.",
 };

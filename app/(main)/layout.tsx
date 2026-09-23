@@ -18,7 +18,7 @@ export default async function PublicLayout({
     <>
       <Header />
       {/* <SiteNoticeTicker notices={notices} /> */}
-      <main id="main-content" className="flex-1" aria-label="Main content">
+      <main id="main-content" className="flex-1 max-w-screen-2xl mx-auto" aria-label="Main content">
         {children}
       </main>
       <Footer />

@@ -15,7 +15,7 @@ export default function FooterConnect({ socials }: FooterConnectProps) {
         <FooterTitle title="PORTAL & SOCIALS" />
 
         <Link
-          href="/login"
+          href="/auth/login"
           className="
             group mt-6 flex h-11 max-w-64 w-full items-center justify-center gap-2.5
             rounded-lg

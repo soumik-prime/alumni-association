@@ -12,7 +12,7 @@ export interface SiteNotice {
 export async function getActiveSiteNotices(): Promise<SiteNotice[]> {
   const now = new Date();
 
-  const notices = await prisma.siteNotice.findMany({
+  const notices = await prisma.siteNotification.findMany({
     where: {
       active: true,
       OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
@@ -22,9 +22,13 @@ export async function getActiveSiteNotices(): Promise<SiteNotice[]> {
       id: true,
       type: true,
       message: true,
-      tone: true,
     },
   });
 
-  return notices;
+  return notices.map((notice) => ({
+    id: notice.id,
+    type: notice.type ?? "INFO",
+    message: notice.message,
+    tone: (notice.type ?? "INFO") as SiteNoticeTone,
+  }));
 }
