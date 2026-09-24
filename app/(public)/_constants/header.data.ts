@@ -32,6 +32,6 @@ export const NAV_LINKS = [
   { href: "/publications", label: "Publications" },
   { href: "/statistics", label: "Statistics" },
   { href: "/about", label: "About" },
-  { href: "/dashboard", label: "Dashboard" },
+  // { href: "/dashboard", label: "Dashboard" },
   // { href: "/profile/me", label: "👤 My Profile" },
 ] as const satisfies readonly HeaderNavLink[];

@@ -2,6 +2,7 @@
 // npm install --save-dev prisma dotenv
 import dotenv from "dotenv";
 import { defineConfig } from "prisma/config";
+import { normalizeDatabaseUrl } from "./lib/prisma/connection";
 
 dotenv.config({ path: ".env.local" });
 dotenv.config({ path: ".env" });
@@ -13,6 +14,6 @@ export default defineConfig({
     seed: "tsx scripts/seed.ts",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: normalizeDatabaseUrl(process.env["DATABASE_URL"]),
   },
 });

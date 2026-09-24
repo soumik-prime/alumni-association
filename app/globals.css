@@ -61,7 +61,7 @@ html {
 }
 
 body {
-  background-color: var(--neu-gray-100);
+  background-color: var(--neu-gray-50);
   color: var(--neu-gray-800);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -121,3 +121,5 @@ body {
     animation: none;
   }
 }
+
+

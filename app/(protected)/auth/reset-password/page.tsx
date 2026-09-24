@@ -2,9 +2,17 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<ResetPasswordLoading />}>
+      <ResetPasswordForm />
+    </Suspense>
+  );
+}
+
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = useMemo(() => searchParams.get("token") ?? "", [searchParams]);
 
@@ -153,6 +161,19 @@ export default function ResetPasswordPage() {
             </Link>
           </div>
         )}
+      </div>
+    </main>
+  );
+}
+
+function ResetPasswordLoading() {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-16">
+      <div className="w-full max-w-xl rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_12px_35px_rgba(15,23,42,0.08)] md:p-10">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+          Account recovery
+        </p>
+        <p className="mt-3 text-slate-600">Loading password reset form...</p>
       </div>
     </main>
   );
