@@ -23,7 +23,7 @@ model Profile {
   regNo String @unique @map("reg_no") @db.VarChar(9)
 
   name           String
-  batch          Int
+  batch          Int @db.SmallInt
   session        String @db.VarChar(7)
   graduationYear Int?   @map("graduation_year") @db.SmallInt
 

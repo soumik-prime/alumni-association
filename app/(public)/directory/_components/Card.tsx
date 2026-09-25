@@ -3,6 +3,7 @@ import Link from "next/link";
 import { MapPin, ArrowUpRight, GraduationCap } from "lucide-react";
 
 type PersonStatus = "student" | "alumni";
+
 export interface StudentCardProps {
   photoUrl: string;
   name: string;
@@ -12,6 +13,7 @@ export interface StudentCardProps {
   location: string;
   href: string;
 }
+
 const STATUS_STYLES: Record<
   PersonStatus,
   {
@@ -51,58 +53,68 @@ export default function Card({
   href,
 }: StudentCardProps) {
   const styles = STATUS_STYLES[status];
+
   return (
     <Link
       href={href}
       aria-label={`View profile of ${name}`}
       className="flex h-full w-full items-center justify-center"
     >
-      <div className="group relative flex h-full w-full max-w-72 md:max-w-85 flex-col overflow-hidden rounded-2xl md:rounded-[28px] bg-white p-3 md:p-4 text-left shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.10)]">
-        <div className={`absolute inset-x-0 top-0 h-1 ${styles.accent}`} />
-        <div className="relative aspect-square w-full overflow-hidden rounded-xl md:rounded-[22px] bg-[#F3F6F4]">
+      <div className="group relative flex h-full w-full max-w-62.5 flex-col overflow-hidden rounded-xl bg-white p-2.5 text-left shadow-[0_2px_10px_rgba(0,0,0,0.06)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(0,0,0,0.10)] sm:max-w-65 md:rounded-2xl md:p-3">
+        <div className={`absolute inset-x-0 top-0 h-0.5 ${styles.accent}`} />
+
+        {/* Image */}
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-[#F3F6F4] md:rounded-xl">
           <Image
             src={photoUrl}
             alt={name}
             fill
-            sizes="(max-width: 768px) 288px, 340px"
+            sizes="(max-width: 640px) 230px, (max-width: 768px) 240px, 260px"
             className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         </div>
-        <div className="mt-2.5 md:mt-4 flex flex-col gap-1 px-1 md:px-2">
+
+        {/* Information */}
+        <div className="mt-2 flex flex-col gap-0.5 px-0.5 md:mt-2.5 md:px-1">
           <h3
-            className={`line-clamp-1 text-base md:text-xl font-bold text-[#17211D] transition-colors duration-200 ${styles.hoverText}`}
+            className={`line-clamp-1 text-sm font-bold text-[#17211D] transition-colors duration-200 md:text-base ${styles.hoverText}`}
           >
             {name}
           </h3>
-          <div className="flex items-center gap-1.5 text-[11px] md:text-xs text-[#66736D]">
+
+          <div className="flex items-center gap-1 text-[10px] text-[#66736D] md:text-[11px]">
             <GraduationCap
-              className="h-3 w-3 md:h-3.5 md:w-3.5 shrink-0 text-[#82908A]"
+              className="h-3 w-3 shrink-0 text-[#82908A]"
               strokeWidth={1.8}
             />
             <span className="line-clamp-1">
               {session} • Batch {batch}
             </span>
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] md:text-xs text-[#66736D]">
+
+          <div className="flex items-center gap-1 text-[10px] text-[#66736D] md:text-[11px]">
             <MapPin
-              className="h-3 w-3 md:h-3.5 md:w-3.5 shrink-0 text-[#82908A]"
+              className="h-3 w-3 shrink-0 text-[#82908A]"
               strokeWidth={1.8}
             />
             <span className="line-clamp-1">{location}</span>
           </div>
         </div>
-        <div className="mt-3 md:mt-4 flex items-center justify-between gap-1.5 md:gap-2 rounded-xl md:rounded-2xl bg-[#F3F6F4] p-2 md:p-2.5">
+
+        {/* Bottom */}
+        <div className="mt-2 flex items-center justify-between gap-1 rounded-lg bg-[#F3F6F4] p-1.5 md:mt-2.5 md:rounded-xl md:p-2">
           <span
-            className={`inline-flex shrink-0 items-center gap-1 md:gap-1.5 rounded-full px-2 md:px-2.5 py-1 md:py-1.5 text-[10px] md:text-[11px] font-semibold ${styles.badge}`}
+            className={`inline-flex shrink-0 items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-semibold md:px-2 md:py-1 md:text-[10px] ${styles.badge}`}
           >
             <span className={`h-1.5 w-1.5 rounded-full ${styles.dot}`} />
             {status === "student" ? "Student" : "Alumni"}
           </span>
+
           <span
-            className={`inline-flex items-center gap-1 md:gap-1.5 rounded-lg md:rounded-xl bg-white px-2.5 md:px-3 py-1 sm:py-1.5 md:py-2 text-[10px] md:text-xs font-semibold shadow-sm transition-all duration-150 ${styles.text} ${styles.buttonHover} group-hover:text-white`}
+            className={`inline-flex items-center gap-1 rounded-md bg-white px-2 py-1 text-[9px] font-semibold shadow-sm transition-all duration-150 md:rounded-lg md:px-2.5 md:py-1.5 md:text-[10px] ${styles.text} ${styles.buttonHover} group-hover:text-white`}
           >
             View Profile
-            <ArrowUpRight className="hidden sm:block h-3 w-3 md:h-3.5 md:w-3.5 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="hidden h-3 w-3 transition-transform duration-150 lg:block group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>
         </div>
       </div>

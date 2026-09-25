@@ -1,12 +1,10 @@
+import { Profile } from "../_types/profile.types";
 import Card from "./Card";
-import type { DirectoryProfile } from "../_data/types";
 
 export interface CardGridProps {
-  profiles: DirectoryProfile[];
+  profiles: Profile[];
 }
 
-// No "use client" needed — this just maps data to <Card />, so it can be
-// rendered on the server (see DirectoryResults.tsx).
 export default function CardGrid({ profiles }: CardGridProps) {
   if (profiles.length === 0) {
     return (
@@ -17,7 +15,7 @@ export default function CardGrid({ profiles }: CardGridProps) {
   }
 
   return (
-    <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 md:gap-4 md:justify-between lg:gap-6">
+    <div className="w-full grid grid-cols-2 md:grid-cols-4 sm:grid-cols-3 gap-2 sm:gap-6 md:gap-4 md:justify-between lg:gap-6">
       {profiles.map((profile) => (
         <div
           key={profile.id}

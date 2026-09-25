@@ -10,9 +10,8 @@ interface ListHeaderProps {
   paramKey?: string;
 }
 
-// Mirrors the "Showing X–Y of Z" count from Pagination, so it can be placed
-// at the top of a list while Pagination itself sits at the bottom — both
-// read the same ?page= param, so they always agree.
+
+
 export default function ListHeader({
   total,
   pageSize = PAGE_SIZE,

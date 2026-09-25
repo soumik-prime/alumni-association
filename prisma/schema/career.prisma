@@ -1,6 +1,5 @@
 enum Industry {
-  SOFTWARE                @map("Software")
-  IT_SERVICES             @map("IT Services")
+  SOFTWARE_IT             @map("Software & IT Services")
   ARTIFICIAL_INTELLIGENCE @map("Artificial Intelligence")
   CYBERSECURITY           @map("Cybersecurity")
   CLOUD_COMPUTING         @map("Cloud Computing")

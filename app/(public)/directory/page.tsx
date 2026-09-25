@@ -9,8 +9,8 @@ import SearchBarSkeleton from "./_components/skeletons/SearchBarSkeleton";
 import FilterSkeleton from "./_components/skeletons/FilterSkeleton";
 import MobileFilterSkeleton from "./_components/skeletons/MobileFilterSkeleton";
 import DirectoryResultsSkeleton from "./_components/skeletons/DirectoryResultsSkeleton";
-import { DEFAULT_PAGE_SIZE } from "./_data/directory-service";
-import type { DirectoryQueryParams } from "./_data/types";
+import { DEFAULT_PAGE_SIZE } from "./_constants/filter-defaults";
+import type { DirectoryQueryParams } from "./_types/query-params.types";
 
 export const metadata: Metadata = {
   title: "Directory",
@@ -42,26 +42,72 @@ export default async function Page({
 }) {
   const params = await searchParams;
 
-  // Everything here is read straight off the URL — this is the one place
-  // that turns `?batch=...&page=...` into the query object the data layer
-  // understands. Swapping the placeholder implementation for a real API
-  // call later shouldn't require changing anything below.
+  const toEnumKey = <T extends Record<string, string>>(
+    value: string | undefined,
+    mapping: T,
+  ): keyof T | undefined => {
+    if (!value) return undefined;
+    return Object.prototype.hasOwnProperty.call(mapping, value)
+      ? (value as keyof T)
+      : undefined;
+  };
+
   const query: DirectoryQueryParams = {
     search: params.search,
     type:
       params.type === "students" || params.type === "alumni"
         ? params.type
         : "all",
-    batch: params.batch,
+    batch: params.batch ? Number(params.batch) : undefined,
     session: params.session,
-    gradYear: params.gradYear,
-    gender: params.gender,
-    bloodGroup: params.bloodGroup,
+    gradYear: params.gradYear ? Number(params.gradYear) : undefined,
+    gender: toEnumKey(params.gender, {
+      Male: "Male",
+      Female: "Female",
+    }),
+    bloodGroup: toEnumKey(params.bloodGroup, {
+      "A+": "A+",
+      "A-": "A-",
+      "B+": "B+",
+      "B-": "B-",
+      "O+": "O+",
+      "O-": "O-",
+      "AB+": "AB+",
+      "AB-": "AB-",
+    }),
     city: params.city,
     country: params.country,
-    degree: params.degree,
+    degree: toEnumKey(params.degree, {
+      MSc: "MSc",
+      MBA: "MBA",
+      MPhil: "MPhil",
+      PhD: "PhD",
+      PostDoc: "PostDoc",
+      Other: "Other",
+    }),
     institution: params.institution,
-    industry: params.industry,
+    industry: toEnumKey(params.industry, {
+      "Software & IT Services": "Software & IT Services",
+      "Artificial Intelligence": "Artificial Intelligence",
+      Cybersecurity: "Cybersecurity",
+      "Cloud Computing": "Cloud Computing",
+      "Blockchain / Web3": "Blockchain / Web3",
+      "Game Development": "Game Development",
+      "Embedded / IoT": "Embedded / IoT",
+      "Robotics & Automation": "Robotics & Automation",
+      Telecom: "Telecom",
+      Fintech: "Fintech",
+      "Banking & Finance": "Banking & Finance",
+      "E-commerce": "E-commerce",
+      Education: "Education",
+      "Research & Academia": "Research & Academia",
+      Government: "Government",
+      Healthcare: "Healthcare",
+      Consulting: "Consulting",
+      Startup: "Startup",
+      Manufacturing: "Manufacturing",
+      Other: "Other",
+    }),
     company: params.company,
     page: params.page ? Number(params.page) || 1 : 1,
     pageSize: DEFAULT_PAGE_SIZE,

@@ -2,11 +2,10 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
-import { PARAM_KEYS, PARAM_LABELS } from "../_data/filter-config";
+import { PARAM_KEYS, PARAM_LABELS } from "../_constants/filter-defaults";
 
-// All filter param keys that can show up as a removable chip. Sourced from
-// PARAM_KEYS so this can never drift from what Filter/MobileFilter actually
-// write to the URL again.
+
+
 const FILTER_KEYS = Object.values(PARAM_KEYS);
 
 export default function FilterChips() {

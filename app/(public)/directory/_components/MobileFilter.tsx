@@ -8,9 +8,8 @@ import {
   PARAM_KEYS,
   type CommunityType,
   type FilterState,
-} from "../_data/filter-config";
-import { placeholderFilterOptions } from "../_data/placeholder-filter-options";
-import type { FilterOptionSet } from "../_data/types";
+} from "../_constants/filter-defaults";
+import { FilterOptionSet } from "../_types/filter.types";
 
 export interface MobileFilterProps extends Partial<FilterOptionSet> {
   onFilterChange?: (filters: FilterState) => void;
@@ -20,17 +19,17 @@ export interface MobileFilterProps extends Partial<FilterOptionSet> {
 export function MobileFilter({
   onFilterChange,
   onReset,
-  batchOptions = placeholderFilterOptions.batchOptions,
-  sessionOptions = placeholderFilterOptions.sessionOptions,
-  graduationYearOptions = placeholderFilterOptions.graduationYearOptions,
-  genderOptions = placeholderFilterOptions.genderOptions,
-  bloodGroupOptions = placeholderFilterOptions.bloodGroupOptions,
-  cityOptions = placeholderFilterOptions.cityOptions,
-  countryOptions = placeholderFilterOptions.countryOptions,
-  degreeOptions = placeholderFilterOptions.degreeOptions,
-  institutionOptions = placeholderFilterOptions.institutionOptions,
-  jobIndustryOptions = placeholderFilterOptions.jobIndustryOptions,
-  companyOptions = placeholderFilterOptions.companyOptions,
+  batchOptions = ["All batches"],
+  sessionOptions = ["All sessions"],
+  graduationYearOptions = ["Any year"],
+  genderOptions = ["Any", "Male", "Female"],
+  bloodGroupOptions = ["Any"],
+  cityOptions = ["Any city"],
+  countryOptions = ["Any country"],
+  degreeOptions = ["Any degree"],
+  institutionOptions = ["Any institution"],
+  jobIndustryOptions = ["Any industry"],
+  companyOptions = ["Any company"],
 }: MobileFilterProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();

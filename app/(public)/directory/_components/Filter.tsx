@@ -7,9 +7,8 @@ import {
   PARAM_KEYS,
   type CommunityType,
   type FilterState,
-} from "../_data/filter-config";
-import { placeholderFilterOptions } from "../_data/placeholder-filter-options";
-import type { FilterOptionSet } from "../_data/types";
+} from "../_constants/filter-defaults";
+import { FilterOptionSet } from "../_types/filter.types";
 
 export type { CommunityType, FilterState };
 
@@ -21,17 +20,17 @@ export interface FilterPanelProps extends Partial<FilterOptionSet> {
 export default function Filter({
   onFilterChange,
   onReset,
-  batchOptions = placeholderFilterOptions.batchOptions,
-  sessionOptions = placeholderFilterOptions.sessionOptions,
-  graduationYearOptions = placeholderFilterOptions.graduationYearOptions,
-  genderOptions = placeholderFilterOptions.genderOptions,
-  bloodGroupOptions = placeholderFilterOptions.bloodGroupOptions,
-  cityOptions = placeholderFilterOptions.cityOptions,
-  countryOptions = placeholderFilterOptions.countryOptions,
-  degreeOptions = placeholderFilterOptions.degreeOptions,
-  institutionOptions = placeholderFilterOptions.institutionOptions,
-  jobIndustryOptions = placeholderFilterOptions.jobIndustryOptions,
-  companyOptions = placeholderFilterOptions.companyOptions,
+  batchOptions = ["All batches"],
+  sessionOptions = ["All sessions"],
+  graduationYearOptions = ["Any year"],
+  genderOptions = ["Any", "Male", "Female"],
+  bloodGroupOptions = ["Any"],
+  cityOptions = ["Any city"],
+  countryOptions = ["Any country"],
+  degreeOptions = ["Any degree"],
+  institutionOptions = ["Any institution"],
+  jobIndustryOptions = ["Any industry"],
+  companyOptions = ["Any company"],
 }: FilterPanelProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -123,31 +122,31 @@ export default function Filter({
           <FilterSelect
             label="Batch"
             value={filters.batch}
-            options={batchOptions}
+            options={batchOptions ?? [""]}
             onChange={(value) => handleSelectChange("batch", value)}
           />
           <FilterSelect
             label="Session"
             value={filters.session}
-            options={sessionOptions}
+            options={sessionOptions ?? [""]}
             onChange={(value) => handleSelectChange("session", value)}
           />
           <FilterSelect
             label="Graduation year"
             value={filters.graduationYear}
-            options={graduationYearOptions}
+            options={graduationYearOptions ?? [""]}
             onChange={(value) => handleSelectChange("graduationYear", value)}
           />
           <FilterSelect
             label="Gender"
             value={filters.gender}
-            options={genderOptions}
+            options={genderOptions  ?? [""]}
             onChange={(value) => handleSelectChange("gender", value)}
           />
           <FilterSelect
             label="Blood group"
             value={filters.bloodGroup}
-            options={bloodGroupOptions}
+            options={bloodGroupOptions  ?? [""]}
             onChange={(value) => handleSelectChange("bloodGroup", value)}
           />
 
@@ -155,13 +154,13 @@ export default function Filter({
             <FilterSelect
               label="City"
               value={filters.city}
-              options={cityOptions}
+              options={cityOptions  ?? [""]}
               onChange={(value) => handleSelectChange("city", value)}
             />
             <FilterSelect
               label="Country"
               value={filters.country}
-              options={countryOptions}
+              options={countryOptions  ?? [""]}
               onChange={(value) => handleSelectChange("country", value)}
             />
           </div>
@@ -169,26 +168,26 @@ export default function Filter({
           <FilterSelect
             label="Degree"
             value={filters.degree}
-            options={degreeOptions}
+            options={degreeOptions  ?? [""]}
             onChange={(value) => handleSelectChange("degree", value)}
           />
           <FilterSelect
             label="Educational institution"
             value={filters.institution}
-            options={institutionOptions}
+            options={institutionOptions  ?? [""]}
             onChange={(value) => handleSelectChange("institution", value)}
           />
           <FilterSelect
             label="Job industry"
             value={filters.jobIndustry}
-            options={jobIndustryOptions}
+            options={jobIndustryOptions  ?? [""]}
             onChange={(value) => handleSelectChange("jobIndustry", value)}
           />
 
           <FilterSelect
             label="Company"
             value={filters.company}
-            options={companyOptions}
+            options={companyOptions ?? [""]}
             onChange={(value) => handleSelectChange("company", value)}
           />
         </div>

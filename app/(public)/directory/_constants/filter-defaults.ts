@@ -1,8 +1,7 @@
-// Single source of truth for the filter shape shared by Filter.tsx,
-// MobileFilter.tsx and FilterChip.tsx. Previously each component kept its
-// own copy of FilterState / DEFAULT_FILTERS / PARAM_KEYS, which had already
-// drifted out of sync (FilterChip was reading param names that Filter never
-// wrote). Import from here instead of redefining.
+// Route-level defaults shared by the page (server) and the filter UI (client).
+// Nothing here touches the database — it's config, not data access.
+
+export const DEFAULT_PAGE_SIZE = 12;
 
 export type CommunityType = "all" | "students" | "alumni";
 
@@ -36,7 +35,6 @@ export const DEFAULT_FILTERS: FilterState = {
   company: "Any company",
 };
 
-// FilterState key -> URL search param name.
 export const PARAM_KEYS: Record<keyof FilterState, string> = {
   communityType: "type",
   batch: "batch",
@@ -52,8 +50,6 @@ export const PARAM_KEYS: Record<keyof FilterState, string> = {
   company: "company",
 };
 
-// Human-readable label for each param key, used by FilterChip so removable
-// chips read "Batch: 04" instead of the raw param name.
 export const PARAM_LABELS: Record<string, string> = {
   type: "Type",
   batch: "Batch",

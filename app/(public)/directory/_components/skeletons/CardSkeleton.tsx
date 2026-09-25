@@ -2,18 +2,23 @@ export default function CardSkeleton() {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div
-        className="flex h-full w-full max-w-72 md:max-w-85 animate-pulse flex-col overflow-hidden rounded-2xl md:rounded-[28px] bg-white p-3 md:p-4 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+        className="flex h-full w-full max-w-62.5 animate-pulse flex-col overflow-hidden rounded-xl bg-white p-2.5 shadow-[0_2px_10px_rgba(0,0,0,0.06)] sm:max-w-65 md:rounded-2xl md:p-3"
         aria-hidden="true"
       >
-        <div className="aspect-square w-full rounded-xl md:rounded-[22px] bg-[#F3F6F4]" />
-        <div className="mt-2.5 md:mt-4 flex flex-col gap-2 px-1 md:px-2">
-          <div className="h-4 w-3/4 rounded-full bg-[#F3F6F4] md:h-5" />
+        {/* Image */}
+        <div className="aspect-square w-full rounded-lg bg-[#F3F6F4] md:rounded-xl" />
+
+        {/* Information */}
+        <div className="mt-2 flex flex-col gap-1 px-0.5 md:mt-2.5 md:px-1">
+          <div className="h-4 w-3/4 rounded-full bg-[#F3F6F4] md:h-4" />
           <div className="h-3 w-1/2 rounded-full bg-[#F3F6F4]" />
           <div className="h-3 w-2/5 rounded-full bg-[#F3F6F4]" />
         </div>
-        <div className="mt-3 md:mt-4 flex items-center justify-between gap-2 rounded-xl md:rounded-2xl bg-[#F3F6F4] p-2 md:p-2.5">
-          <div className="h-5 w-16 rounded-full bg-white/80" />
-          <div className="h-6 w-20 rounded-lg md:rounded-xl bg-white/80" />
+
+        {/* Bottom */}
+        <div className="mt-2 flex items-center justify-between gap-1 rounded-lg bg-[#F3F6F4] p-1.5 md:mt-2.5 md:rounded-xl md:p-2">
+          <div className="h-4 w-14 rounded-full bg-white/80 md:h-5 md:w-16" />
+          <div className="h-5 w-20 rounded-md bg-white/80 md:h-6 md:w-20 md:rounded-lg" />
         </div>
       </div>
     </div>
