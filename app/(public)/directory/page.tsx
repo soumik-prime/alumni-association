@@ -6,6 +6,9 @@ import FilterChips from "./_components/FilterChip";
 import Title from "../_components/Title";
 import Filter from "./_components/Filter";
 import { MobileFilter } from "./_components/MobileFilter";
+import Pagination from "./_components/Pagination";
+import ListHeader from "./_components/ListHeader";
+
 
 export const metadata: Metadata = {
   title: "Directory",
@@ -54,6 +57,7 @@ export default async function Page() {
           </Suspense>
         </div>
         <div className="md:col-span-3">
+          <ListHeader  total={200} pageSize={12} />
           <Suspense
             fallback={
               <div className="mb-4 h-10 w-48 rounded-full bg-gray-100/80" />
@@ -72,7 +76,9 @@ export default async function Page() {
           >
             <CardGrid />
           </Suspense>
-          {/* <Pagination {...{total: 200, page: 1, pageSize: 9, paramKey: "page"}}></Pagination> */}
+          <Suspense fallback={null}>
+            <Pagination total={200} pageSize={12} />
+          </Suspense>
         </div>
       </div>
 
