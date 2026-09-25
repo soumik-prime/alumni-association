@@ -4,7 +4,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
 
 const FILTERS = [
-  "q",
   "type",
   "batch",
   "session",
@@ -31,9 +30,12 @@ export default function FilterChips() {
     params.delete("page");
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
+  const clearAll = () => {
+    router.push(pathname, { scroll: false });
+  };
   if (!active.length) return null;
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2 pb-4">
       {active.map(({ key, value }) => (
         <span
           key={key}
@@ -50,6 +52,15 @@ export default function FilterChips() {
           </button>
         </span>
       ))}
+      {active.length > 1 && (
+        <button
+          type="button"
+          onClick={clearAll}
+          className="text-xs font-medium text-gray-500 underline-offset-2 hover:text-[#02644A] hover:underline"
+        >
+          Clear all
+        </button>
+      )}
     </div>
   );
 }

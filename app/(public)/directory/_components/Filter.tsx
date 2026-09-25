@@ -9,12 +9,15 @@ export interface FilterState {
   communityType: CommunityType;
   batch: string;
   session: string;
-  semester: string;
   graduationYear: string;
   gender: string;
-  location: string;
+  bloodGroup: string;
+  city: string;
+  country: string;
+  degree: string;
   institution: string;
-  sortBy: string;
+  jobIndustry: string;
+  company: string;
 }
 
 export interface FilterPanelProps {
@@ -22,36 +25,45 @@ export interface FilterPanelProps {
   onReset?: () => void;
   batchOptions?: string[];
   sessionOptions?: string[];
-  semesterOptions?: string[];
   graduationYearOptions?: string[];
   genderOptions?: string[];
-  locationOptions?: string[];
+  bloodGroupOptions?: string[];
+  cityOptions?: string[];
+  countryOptions?: string[];
+  degreeOptions?: string[];
   institutionOptions?: string[];
-  sortOptions?: string[];
+  jobIndustryOptions?: string[];
+  companyOptions?: string[];
 }
 
 const DEFAULT_FILTERS: FilterState = {
   communityType: "all",
   batch: "All batches",
   session: "All sessions",
-  semester: "Any semester",
   graduationYear: "Any year",
   gender: "Any",
-  location: "Anywhere",
+  bloodGroup: "Any",
+  city: "Any city",
+  country: "Any country",
+  degree: "Any degree",
   institution: "Any institution",
-  sortBy: "Newest",
+  jobIndustry: "Any industry",
+  company: "Any company",
 };
 
 const PARAM_KEYS: Record<keyof FilterState, string> = {
   communityType: "type",
   batch: "batch",
   session: "session",
-  semester: "semester",
   graduationYear: "gradYear",
   gender: "gender",
-  location: "location",
+  bloodGroup: "bloodGroup",
+  city: "city",
+  country: "country",
+  degree: "degree",
   institution: "institution",
-  sortBy: "sort",
+  jobIndustry: "industry",
+  company: "company",
 };
 
 export default function Filter({
@@ -59,22 +71,32 @@ export default function Filter({
   onReset,
   batchOptions = ["All batches", "Batch 01", "Batch 02", "Batch 03"],
   sessionOptions = ["All sessions", "2020-21", "2021-22", "2022-23"],
-  semesterOptions = [
-    "Any semester",
-    "1st",
-    "2nd",
-    "3rd",
-    "4th",
-    "5th",
-    "6th",
-    "7th",
-    "8th",
-  ],
   graduationYearOptions = ["Any year", "2023", "2024", "2025", "2026"],
   genderOptions = ["Any", "Male", "Female", "Other"],
-  locationOptions = ["Anywhere", "Dhaka", "Chittagong", "Sylhet", "Remote"],
+  bloodGroupOptions = ["Any", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+  cityOptions = ["Any city", "Netrokona", "Dhaka", "Chittagong", "Sylhet"],
+  countryOptions = ["Any country", "Bangladesh", "Other"],
+  degreeOptions = ["Any degree", "Diploma", "BSc", "MSc", "MBA", "PhD"],
   institutionOptions = ["Any institution", "BUET", "DU", "NSU", "BRAC"],
-  sortOptions = ["Newest", "Oldest", "Name (A-Z)", "Name (Z-A)"],
+  jobIndustryOptions = [
+    "Any industry",
+    "Software / IT",
+    "Telecom",
+    "Finance / Banking",
+    "Education",
+    "Government",
+    "Healthcare",
+    "Research / Academia",
+  ],
+  companyOptions = [
+    "Any company",
+    "Google",
+    "Microsoft",
+    "Brain Station 23",
+    "Therap BD",
+    "Samsung R&D",
+    "Other",
+  ],
 }: FilterPanelProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -85,15 +107,20 @@ export default function Filter({
       DEFAULT_FILTERS.communityType,
     batch: searchParams.get(PARAM_KEYS.batch) ?? DEFAULT_FILTERS.batch,
     session: searchParams.get(PARAM_KEYS.session) ?? DEFAULT_FILTERS.session,
-    semester: searchParams.get(PARAM_KEYS.semester) ?? DEFAULT_FILTERS.semester,
     graduationYear:
       searchParams.get(PARAM_KEYS.graduationYear) ??
       DEFAULT_FILTERS.graduationYear,
     gender: searchParams.get(PARAM_KEYS.gender) ?? DEFAULT_FILTERS.gender,
-    location: searchParams.get(PARAM_KEYS.location) ?? DEFAULT_FILTERS.location,
+    bloodGroup:
+      searchParams.get(PARAM_KEYS.bloodGroup) ?? DEFAULT_FILTERS.bloodGroup,
+    city: searchParams.get(PARAM_KEYS.city) ?? DEFAULT_FILTERS.city,
+    country: searchParams.get(PARAM_KEYS.country) ?? DEFAULT_FILTERS.country,
+    degree: searchParams.get(PARAM_KEYS.degree) ?? DEFAULT_FILTERS.degree,
     institution:
       searchParams.get(PARAM_KEYS.institution) ?? DEFAULT_FILTERS.institution,
-    sortBy: searchParams.get(PARAM_KEYS.sortBy) ?? DEFAULT_FILTERS.sortBy,
+    jobIndustry:
+      searchParams.get(PARAM_KEYS.jobIndustry) ?? DEFAULT_FILTERS.jobIndustry,
+    company: searchParams.get(PARAM_KEYS.company) ?? DEFAULT_FILTERS.company,
   };
 
   const pushParams = (params: URLSearchParams) => {
@@ -118,8 +145,8 @@ export default function Filter({
   };
 
   return (
-    <div className="w-full rounded-3xl border border-gray-100 bg-white p-5 shadow-sm">
-      <div className="flex items-center justify-between pb-4">
+    <div className="flex h-full w-full flex-col rounded-3xl border border-gray-100 bg-white shadow-sm">
+      <div className="flex shrink-0 items-center justify-between p-5 pb-4">
         <div className="flex items-center gap-2">
           <SlidersHorizontal className="h-4 w-4 text-[#02644A]" />
           <h2 className="text-lg font-bold text-slate-700">Filters</h2>
@@ -133,76 +160,103 @@ export default function Filter({
         </button>
       </div>
 
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-gray-500">
-            Community type
-          </label>
-          <div className="flex rounded-xl bg-gray-50 p-1">
-            {(["all", "students", "alumni"] as CommunityType[]).map((type) => {
-              const isActive = filters.communityType === type;
-              return (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => handleSelectChange("communityType", type)}
-                  className={`flex-1 rounded-lg py-1.5 text-xs font-medium capitalize transition-all ${isActive ? "bg-[#02644A] text-white shadow-sm" : "text-gray-500 hover:text-slate-700"}`}
-                >
-                  {type === "all" ? "All" : type}
-                </button>
-              );
-            })}
+      <div className="flex-1 overflow-y-auto px-5 pb-5 scrollbar-none">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-500">
+              Community type
+            </label>
+            <div className="flex rounded-xl bg-gray-50 p-1">
+              {(["all", "students", "alumni"] as CommunityType[]).map(
+                (type) => {
+                  const isActive = filters.communityType === type;
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => handleSelectChange("communityType", type)}
+                      className={`flex-1 rounded-lg py-1.5 text-xs font-medium capitalize transition-all ${isActive ? "bg-[#02644A] text-white shadow-sm" : "text-gray-500 hover:text-slate-700"}`}
+                    >
+                      {type === "all" ? "All" : type}
+                    </button>
+                  );
+                },
+              )}
+            </div>
           </div>
-        </div>
 
-        <FilterSelect
-          label="Batch"
-          value={filters.batch}
-          options={batchOptions}
-          onChange={(value) => handleSelectChange("batch", value)}
-        />
-        <FilterSelect
-          label="Session"
-          value={filters.session}
-          options={sessionOptions}
-          onChange={(value) => handleSelectChange("session", value)}
-        />
-        <FilterSelect
-          label="Semester"
-          value={filters.semester}
-          options={semesterOptions}
-          onChange={(value) => handleSelectChange("semester", value)}
-        />
-        <FilterSelect
-          label="Graduation year"
-          value={filters.graduationYear}
-          options={graduationYearOptions}
-          onChange={(value) => handleSelectChange("graduationYear", value)}
-        />
-        <FilterSelect
-          label="Gender"
-          value={filters.gender}
-          options={genderOptions}
-          onChange={(value) => handleSelectChange("gender", value)}
-        />
-        <FilterSelect
-          label="Location"
-          value={filters.location}
-          options={locationOptions}
-          onChange={(value) => handleSelectChange("location", value)}
-        />
-        <FilterSelect
-          label="Institution / higher studies"
-          value={filters.institution}
-          options={institutionOptions}
-          onChange={(value) => handleSelectChange("institution", value)}
-        />
-        <FilterSelect
-          label="Sort by"
-          value={filters.sortBy}
-          options={sortOptions}
-          onChange={(value) => handleSelectChange("sortBy", value)}
-        />
+          <FilterSelect
+            label="Batch"
+            value={filters.batch}
+            options={batchOptions}
+            onChange={(value) => handleSelectChange("batch", value)}
+          />
+          <FilterSelect
+            label="Session"
+            value={filters.session}
+            options={sessionOptions}
+            onChange={(value) => handleSelectChange("session", value)}
+          />
+          <FilterSelect
+            label="Graduation year"
+            value={filters.graduationYear}
+            options={graduationYearOptions}
+            onChange={(value) => handleSelectChange("graduationYear", value)}
+          />
+          <FilterSelect
+            label="Gender"
+            value={filters.gender}
+            options={genderOptions}
+            onChange={(value) => handleSelectChange("gender", value)}
+          />
+          <FilterSelect
+            label="Blood group"
+            value={filters.bloodGroup}
+            options={bloodGroupOptions}
+            onChange={(value) => handleSelectChange("bloodGroup", value)}
+          />
+
+          <div className="grid grid-cols-2 gap-2">
+            <FilterSelect
+              label="City"
+              value={filters.city}
+              options={cityOptions}
+              onChange={(value) => handleSelectChange("city", value)}
+            />
+            <FilterSelect
+              label="Country"
+              value={filters.country}
+              options={countryOptions}
+              onChange={(value) => handleSelectChange("country", value)}
+            />
+          </div>
+
+          <FilterSelect
+            label="Degree"
+            value={filters.degree}
+            options={degreeOptions}
+            onChange={(value) => handleSelectChange("degree", value)}
+          />
+          <FilterSelect
+            label="Educational institution"
+            value={filters.institution}
+            options={institutionOptions}
+            onChange={(value) => handleSelectChange("institution", value)}
+          />
+          <FilterSelect
+            label="Job industry"
+            value={filters.jobIndustry}
+            options={jobIndustryOptions}
+            onChange={(value) => handleSelectChange("jobIndustry", value)}
+          />
+
+          <FilterSelect
+            label="Company"
+            value={filters.company}
+            options={companyOptions}
+            onChange={(value) => handleSelectChange("company", value)}
+          />
+        </div>
       </div>
     </div>
   );
