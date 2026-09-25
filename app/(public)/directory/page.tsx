@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import SearchBar from "./_components/SearchBar";
-import CardGrid from "./_components/CardGrid";
-import FilterChips from "./_components/FilterChip";
+import DirectoryResults from "./_components/DirectoryResults";
 import Title from "../_components/Title";
-import Filter from "./_components/Filter";
-import { MobileFilter } from "./_components/MobileFilter";
-import Pagination from "./_components/Pagination";
-import ListHeader from "./_components/ListHeader";
-
+import FilterPanel from "./_components/FilterPanel";
+import MobileFilterPanel from "./_components/MobileFilterPanel";
+import SearchBarSkeleton from "./_components/skeletons/SearchBarSkeleton";
+import FilterSkeleton from "./_components/skeletons/FilterSkeleton";
+import MobileFilterSkeleton from "./_components/skeletons/MobileFilterSkeleton";
+import DirectoryResultsSkeleton from "./_components/skeletons/DirectoryResultsSkeleton";
+import { DEFAULT_PAGE_SIZE } from "./_data/directory-service";
+import type { DirectoryQueryParams } from "./_data/types";
 
 export const metadata: Metadata = {
   title: "Directory",
@@ -16,12 +18,55 @@ export const metadata: Metadata = {
     "Browse the alumni and student directory for the Department of CSE at Netrokona University.",
 };
 
-export default async function Page() {
-  // { searchParams }: { searchParams: Promise<{ q?: string; batch?: string; session?: string; city?: string; page?: string }> }
-  // const params = await searchParams;
-  // const batch = params.batch ? Number(params.batch) : undefined;
-  // const page = params.page ? Number(params.page) : 1;
-  // const result = await getPublicProfiles({ query: params.q, batch: Number.isFinite(batch) ? batch : undefined, session: params.session, city: params.city, page });
+interface PageSearchParams {
+  search?: string;
+  type?: string;
+  batch?: string;
+  session?: string;
+  gradYear?: string;
+  gender?: string;
+  bloodGroup?: string;
+  city?: string;
+  country?: string;
+  degree?: string;
+  institution?: string;
+  industry?: string;
+  company?: string;
+  page?: string;
+}
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<PageSearchParams>;
+}) {
+  const params = await searchParams;
+
+  // Everything here is read straight off the URL — this is the one place
+  // that turns `?batch=...&page=...` into the query object the data layer
+  // understands. Swapping the placeholder implementation for a real API
+  // call later shouldn't require changing anything below.
+  const query: DirectoryQueryParams = {
+    search: params.search,
+    type:
+      params.type === "students" || params.type === "alumni"
+        ? params.type
+        : "all",
+    batch: params.batch,
+    session: params.session,
+    gradYear: params.gradYear,
+    gender: params.gender,
+    bloodGroup: params.bloodGroup,
+    city: params.city,
+    country: params.country,
+    degree: params.degree,
+    institution: params.institution,
+    industry: params.industry,
+    company: params.company,
+    page: params.page ? Number(params.page) || 1 : 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  };
+
   const bgColor = "bg-linear-to-r from-green-50/80 via-white to-emerald-50/80";
   const title = "Alumni & Student Directory";
   const description =
@@ -33,13 +78,11 @@ export default async function Page() {
       <Title {...{ title, description, maxWidth }} />
 
       <div className={`${maxWidth} px-2 md:px-6 pt-4 grid grid-cols-[1fr_auto] items-stretch gap-2 lg:flex lg:justify-center`}>
-        <Suspense
-          fallback={<div className="h-12 w-full rounded-2xl bg-gray-100/80" />}
-        >
+        <Suspense fallback={<SearchBarSkeleton />}>
           <SearchBar />
         </Suspense>
-        <Suspense>
-          <MobileFilter />
+        <Suspense fallback={<MobileFilterSkeleton />}>
+          <MobileFilterPanel />
         </Suspense>
       </div>
 
@@ -50,41 +93,16 @@ export default async function Page() {
           className="col-span-1 hidden lg:block lg:sticky lg:top-16 lg:self-start"
           style={{ height: "calc(100vh - 5rem)" }}
         >
-          <Suspense
-            fallback={<div className="h-120 rounded-3xl bg-white/80" />}
-          >
-            <Filter />
+          <Suspense fallback={<FilterSkeleton />}>
+            <FilterPanel />
           </Suspense>
         </div>
-        <div className="md:col-span-3">
-          <Suspense>
-            <ListHeader  total={200} pageSize={12} />
-          </Suspense>
-          <Suspense
-            fallback={
-              <div className="mb-4 h-10 w-48 rounded-full bg-gray-100/80" />
-            }
-          >
-            <FilterChips />
-          </Suspense>
-          <Suspense
-            fallback={
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-64 rounded-2xl bg-gray-100/80" />
-                ))}
-              </div>
-            }
-          >
-            <CardGrid />
-          </Suspense>
-          <Suspense fallback={null}>
-            <Pagination total={200} pageSize={12} />
+        <div className="md:col-span-3 flex flex-col lg:min-h-[calc(100vh-5rem)]">
+          <Suspense fallback={<DirectoryResultsSkeleton />}>
+            <DirectoryResults query={query} />
           </Suspense>
         </div>
       </div>
-
-      {/* <DirectoryView profiles={result.profiles} total={result.total} page={result.page} totalPages={result.totalPages} query={params.q} batch={Number.isFinite(batch) ? batch : undefined} session={params.session} city={params.city} /> */}
     </main>
   );
 }

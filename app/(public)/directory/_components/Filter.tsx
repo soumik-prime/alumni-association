@@ -2,101 +2,36 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
+import {
+  DEFAULT_FILTERS,
+  PARAM_KEYS,
+  type CommunityType,
+  type FilterState,
+} from "../_data/filter-config";
+import { placeholderFilterOptions } from "../_data/placeholder-filter-options";
+import type { FilterOptionSet } from "../_data/types";
 
-export type CommunityType = "all" | "students" | "alumni";
+export type { CommunityType, FilterState };
 
-export interface FilterState {
-  communityType: CommunityType;
-  batch: string;
-  session: string;
-  graduationYear: string;
-  gender: string;
-  bloodGroup: string;
-  city: string;
-  country: string;
-  degree: string;
-  institution: string;
-  jobIndustry: string;
-  company: string;
-}
-
-export interface FilterPanelProps {
+export interface FilterPanelProps extends Partial<FilterOptionSet> {
   onFilterChange?: (filters: FilterState) => void;
   onReset?: () => void;
-  batchOptions?: string[];
-  sessionOptions?: string[];
-  graduationYearOptions?: string[];
-  genderOptions?: string[];
-  bloodGroupOptions?: string[];
-  cityOptions?: string[];
-  countryOptions?: string[];
-  degreeOptions?: string[];
-  institutionOptions?: string[];
-  jobIndustryOptions?: string[];
-  companyOptions?: string[];
 }
-
-const DEFAULT_FILTERS: FilterState = {
-  communityType: "all",
-  batch: "All batches",
-  session: "All sessions",
-  graduationYear: "Any year",
-  gender: "Any",
-  bloodGroup: "Any",
-  city: "Any city",
-  country: "Any country",
-  degree: "Any degree",
-  institution: "Any institution",
-  jobIndustry: "Any industry",
-  company: "Any company",
-};
-
-const PARAM_KEYS: Record<keyof FilterState, string> = {
-  communityType: "type",
-  batch: "batch",
-  session: "session",
-  graduationYear: "gradYear",
-  gender: "gender",
-  bloodGroup: "bloodGroup",
-  city: "city",
-  country: "country",
-  degree: "degree",
-  institution: "institution",
-  jobIndustry: "industry",
-  company: "company",
-};
 
 export default function Filter({
   onFilterChange,
   onReset,
-  batchOptions = ["All batches", "Batch 01", "Batch 02", "Batch 03"],
-  sessionOptions = ["All sessions", "2020-21", "2021-22", "2022-23"],
-  graduationYearOptions = ["Any year", "2023", "2024", "2025", "2026"],
-  genderOptions = ["Any", "Male", "Female", "Other"],
-  bloodGroupOptions = ["Any", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-  cityOptions = ["Any city", "Netrokona", "Dhaka", "Chittagong", "Sylhet"],
-  countryOptions = ["Any country", "Bangladesh", "Other"],
-  degreeOptions = ["Any degree", "Diploma", "BSc", "MSc", "MBA", "PhD"],
-  institutionOptions = ["Any institution", "BUET", "DU", "NSU", "BRAC"],
-  jobIndustryOptions = [
-    "Any industry",
-    "Software / IT",
-    "Telecom",
-    "Finance / Banking",
-    "Education",
-    "Government",
-    "Healthcare",
-    "Research / Academia",
-  ],
-  companyOptions = [
-    "Any company",
-    "Google",
-    "Microsoft",
-    "Brain Station 23",
-    "Therap BD",
-    "Samsung R&D",
-    "Other",
-  ],
+  batchOptions = placeholderFilterOptions.batchOptions,
+  sessionOptions = placeholderFilterOptions.sessionOptions,
+  graduationYearOptions = placeholderFilterOptions.graduationYearOptions,
+  genderOptions = placeholderFilterOptions.genderOptions,
+  bloodGroupOptions = placeholderFilterOptions.bloodGroupOptions,
+  cityOptions = placeholderFilterOptions.cityOptions,
+  countryOptions = placeholderFilterOptions.countryOptions,
+  degreeOptions = placeholderFilterOptions.degreeOptions,
+  institutionOptions = placeholderFilterOptions.institutionOptions,
+  jobIndustryOptions = placeholderFilterOptions.jobIndustryOptions,
+  companyOptions = placeholderFilterOptions.companyOptions,
 }: FilterPanelProps) {
   const router = useRouter();
   const pathname = usePathname();

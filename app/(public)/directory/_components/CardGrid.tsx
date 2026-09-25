@@ -1,26 +1,37 @@
-"use client";
-
 import Card from "./Card";
+import type { DirectoryProfile } from "../_data/types";
 
-const cardData = {
-  photoUrl: "/placeholder.jpeg",
-  name: "Md. Samiul Islam Soumik",
-  status: "student" as "student" | "alumni",
-  session: "2022-23",
-  batch: "4",
-  location: "Thakurgaon, Bangladesh",
-  href: "/directory",
-};
+export interface CardGridProps {
+  profiles: DirectoryProfile[];
+}
 
-export default function CardGrid() {
+// No "use client" needed — this just maps data to <Card />, so it can be
+// rendered on the server (see DirectoryResults.tsx).
+export default function CardGrid({ profiles }: CardGridProps) {
+  if (profiles.length === 0) {
+    return (
+      <div className="flex min-h-48 w-full items-center justify-center rounded-2xl bg-white/60 text-sm text-gray-400">
+        No profiles match your filters.
+      </div>
+    );
+  }
+
   return (
     <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-6 md:gap-4 md:justify-between lg:gap-6">
-      {Array.from({ length: 12 }, (_, index) => (
+      {profiles.map((profile) => (
         <div
-          key={index}
+          key={profile.id}
           className="flex h-full w-full items-center justify-center"
         >
-          <Card {...cardData} />
+          <Card
+            photoUrl={profile.photoUrl}
+            name={profile.name}
+            status={profile.status}
+            session={profile.session}
+            batch={profile.batch}
+            location={`${profile.city}, ${profile.country}`}
+            href={`/directory/${profile.id}`}
+          />
         </div>
       ))}
     </div>

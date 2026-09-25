@@ -2,23 +2,18 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
+import { PARAM_KEYS, PARAM_LABELS } from "../_data/filter-config";
 
-const FILTERS = [
-  "type",
-  "batch",
-  "session",
-  "semester",
-  "gradYear",
-  "gender",
-  "location",
-  "institution",
-];
+// All filter param keys that can show up as a removable chip. Sourced from
+// PARAM_KEYS so this can never drift from what Filter/MobileFilter actually
+// write to the URL again.
+const FILTER_KEYS = Object.values(PARAM_KEYS);
 
 export default function FilterChips() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const active = FILTERS.map((key) => ({
+  const active = FILTER_KEYS.map((key) => ({
     key,
     value: searchParams.get(key),
   })).filter((chip): chip is { key: string; value: string } =>
@@ -41,11 +36,11 @@ export default function FilterChips() {
           key={key}
           className="inline-flex items-center gap-1.5 rounded-full border border-[#02644A]/20 bg-[#02644A]/5 px-3 py-1 text-xs font-medium text-[#02644A]"
         >
-          {key}: {value}
+          {PARAM_LABELS[key] ?? key}: {value}
           <button
             type="button"
             onClick={() => remove(key)}
-            aria-label={`Remove ${key} filter`}
+            aria-label={`Remove ${PARAM_LABELS[key] ?? key} filter`}
             className="rounded-full p-0.5"
           >
             <X className="h-3 w-3" />

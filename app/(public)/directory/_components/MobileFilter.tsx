@@ -3,95 +3,34 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
-import type { CommunityType, FilterState } from "./Filter";
+import {
+  DEFAULT_FILTERS,
+  PARAM_KEYS,
+  type CommunityType,
+  type FilterState,
+} from "../_data/filter-config";
+import { placeholderFilterOptions } from "../_data/placeholder-filter-options";
+import type { FilterOptionSet } from "../_data/types";
 
-export interface MobileFilterProps {
+export interface MobileFilterProps extends Partial<FilterOptionSet> {
   onFilterChange?: (filters: FilterState) => void;
   onReset?: () => void;
-  batchOptions?: string[];
-  sessionOptions?: string[];
-  graduationYearOptions?: string[];
-  genderOptions?: string[];
-  bloodGroupOptions?: string[];
-  cityOptions?: string[];
-  countryOptions?: string[];
-  degreeOptions?: string[];
-  institutionOptions?: string[];
-  jobIndustryOptions?: string[];
-  companyOptions?: string[];
 }
-
-const DEFAULT_FILTERS: FilterState = {
-  communityType: "all",
-  batch: "All batches",
-  session: "All sessions",
-  graduationYear: "Any year",
-  gender: "Any",
-  bloodGroup: "Any",
-  city: "Any city",
-  country: "Any country",
-  degree: "Any degree",
-  institution: "Any institution",
-  jobIndustry: "Any industry",
-  company: "Any company",
-};
-
-const PARAM_KEYS: Record<keyof FilterState, string> = {
-  communityType: "type",
-  batch: "batch",
-  session: "session",
-  graduationYear: "gradYear",
-  gender: "gender",
-  bloodGroup: "bloodGroup",
-  city: "city",
-  country: "country",
-  degree: "degree",
-  institution: "institution",
-  jobIndustry: "industry",
-  company: "company",
-};
 
 export function MobileFilter({
   onFilterChange,
   onReset,
-  batchOptions = ["All batches", "Batch 01", "Batch 02", "Batch 03"],
-  sessionOptions = ["All sessions", "2020-21", "2021-22", "2022-23"],
-  graduationYearOptions = ["Any year", "2023", "2024", "2025", "2026"],
-  genderOptions = ["Any", "Male", "Female", "Other"],
-  bloodGroupOptions = [
-    "Any",
-    "A+",
-    "A-",
-    "B+",
-    "B-",
-    "AB+",
-    "AB-",
-    "O+",
-    "O-",
-  ],
-  cityOptions = ["Any city", "Netrokona", "Dhaka", "Chittagong", "Sylhet"],
-  countryOptions = ["Any country", "Bangladesh", "Other"],
-  degreeOptions = ["Any degree", "Diploma", "BSc", "MSc", "MBA", "PhD"],
-  institutionOptions = ["Any institution", "BUET", "DU", "NSU", "BRAC"],
-  jobIndustryOptions = [
-    "Any industry",
-    "Software / IT",
-    "Telecom",
-    "Finance / Banking",
-    "Education",
-    "Government",
-    "Healthcare",
-    "Research / Academia",
-  ],
-  companyOptions = [
-    "Any company",
-    "Google",
-    "Microsoft",
-    "Brain Station 23",
-    "Therap BD",
-    "Samsung R&D",
-    "Other",
-  ],
+  batchOptions = placeholderFilterOptions.batchOptions,
+  sessionOptions = placeholderFilterOptions.sessionOptions,
+  graduationYearOptions = placeholderFilterOptions.graduationYearOptions,
+  genderOptions = placeholderFilterOptions.genderOptions,
+  bloodGroupOptions = placeholderFilterOptions.bloodGroupOptions,
+  cityOptions = placeholderFilterOptions.cityOptions,
+  countryOptions = placeholderFilterOptions.countryOptions,
+  degreeOptions = placeholderFilterOptions.degreeOptions,
+  institutionOptions = placeholderFilterOptions.institutionOptions,
+  jobIndustryOptions = placeholderFilterOptions.jobIndustryOptions,
+  companyOptions = placeholderFilterOptions.companyOptions,
 }: MobileFilterProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
