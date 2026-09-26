@@ -1,0 +1,2 @@
+ALTER TYPE "degree" ADD VALUE 'SSC';
+ALTER TYPE "degree" ADD VALUE 'HSC';

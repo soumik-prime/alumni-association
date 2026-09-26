@@ -2,6 +2,7 @@ export type PersonStatus = "student" | "alumni";
 
 export interface Profile {
   id: string;
+  regNo: string;
   name: string;
   photoUrl: string;
   status: PersonStatus;

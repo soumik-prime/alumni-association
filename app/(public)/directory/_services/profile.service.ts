@@ -53,7 +53,12 @@ function buildProfileWhere(query: QueryParams, currentYear: number) {
   if (query.type && query.type !== "all") {
     conditions.push(
       query.type === "students"
-        ? { OR: [{ graduationYear: null }, { graduationYear: { gte: currentYear } }] }
+        ? {
+            OR: [
+              { graduationYear: null },
+              { graduationYear: { gte: currentYear } },
+            ],
+          }
         : { graduationYear: { lt: currentYear } },
     );
   }
@@ -86,30 +91,26 @@ function buildProfileWhere(query: QueryParams, currentYear: number) {
 
   if (query.degree) {
     conditions.push({
-      higherStudies: { some: { degree: enumMappings.degree[query.degree] } },
+      educations: { some: { degree: enumMappings.degree[query.degree] } },
     });
   }
 
   if (institution) {
     conditions.push({
-      OR: [
-        { sscInstitution: { name: { contains: institution, mode: "insensitive" } } },
-        { hscInstitution: { name: { contains: institution, mode: "insensitive" } } },
-        {
-          higherStudies: {
-            some: {
-              institution: { name: { contains: institution, mode: "insensitive" } },
-            },
-          },
+      educations: {
+        some: {
+          institution: { name: { contains: institution, mode: "insensitive" } },
         },
-      ],
+      },
     });
   }
 
   if (query.industry) {
     conditions.push({
       workExperiences: {
-        some: { company: { industry: enumMappings.jobIndustry[query.industry] } },
+        some: {
+          company: { industry: enumMappings.jobIndustry[query.industry] },
+        },
       },
     });
   }
@@ -134,6 +135,7 @@ function toProfileDTO(row: ProfileListRow, currentYear: number): Profile {
 
   return {
     id: row.id,
+    regNo: row.regNo,
     name: row.name,
     photoUrl: row.photo ?? "/placeholder.webp",
     status,

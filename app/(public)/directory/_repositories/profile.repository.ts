@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma/prisma";
 // so the service layer can type its mapping function against it directly.
 const PROFILE_LIST_SELECT = {
   id: true,
+  regNo: true,
   name: true,
   photo: true,
   batch: true,

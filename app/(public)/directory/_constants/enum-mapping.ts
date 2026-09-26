@@ -17,6 +17,8 @@ const bloodGroup = {
 } as const;
 
 const degree = {
+  SSC: Degree.SSC,
+  HSC: Degree.HSC,
   MSc: Degree.MSC,
   MBA: Degree.MBA,
   MPhil: Degree.MPHIL,

@@ -1,4 +1,6 @@
 enum Degree {
+  SSC     @map("SSC")
+  HSC     @map("HSC")
   MSC     @map("MSc")
   MBA     @map("MBA")
   MPHIL   @map("MPhil")
@@ -16,26 +18,24 @@ model Institution {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  higherStudies  HigherStudy[]
-  sscProfiles     Profile[]     @relation("SscInstitution")
-  hscProfiles     Profile[]     @relation("HscInstitution")
+  educations Education[]
 
   @@map("institutions")
 }
 
-model HigherStudy {
+model Education {
   id             String      @id @default(uuid())
   studentId      String      @map("student_id")
   student        Profile     @relation(fields: [studentId], references: [id])
   institutionId  String      @map("institution_id")
   institution    Institution @relation(fields: [institutionId], references: [id])
   degree         Degree
-  field           String?     @db.VarChar(50)
+  field          String?     @db.VarChar(50)
   graduationYear Int?        @map("graduation_year") @db.SmallInt
   createdAt      DateTime    @default(now()) @map("created_at")
   updatedAt      DateTime    @updatedAt @map("updated_at")
 
   @@index([studentId])
   @@index([institutionId])
-  @@map("higher_studies")
+  @@map("educations")
 }

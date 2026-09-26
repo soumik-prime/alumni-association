@@ -43,19 +43,13 @@ model Profile {
   permanentAddressId String?  @map("permanent_address_id")
   permanentAddress   Address? @relation("PermanentAddress", fields: [permanentAddressId], references: [id])
 
-  sscInstitutionId String?      @map("ssc_institution_id")
-  sscInstitution   Institution? @relation("SscInstitution", fields: [sscInstitutionId], references: [id])
-
-  hscInstitutionId String?      @map("hsc_institution_id")
-  hscInstitution   Institution? @relation("HscInstitution", fields: [hscInstitutionId], references: [id])
-
   visible   Boolean  @default(true)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   workExperiences    WorkExperience[]
   publicationAuthors PublicationAuthor[]
-  higherStudies      HigherStudy[]
+  educations         Education[]
   user               User?
 
   @@index([batch])

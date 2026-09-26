@@ -1,0 +1,11 @@
+export { Profile } from "./ProfileView";
+export { ProfileHero } from "./ProfileHero";
+export { ProfileOverview } from "./ProfileOverview";
+export { AboutSection } from "./AboutSection";
+export { AcademicSection } from "./AcademicSection";
+export { HigherStudiesSection } from "./HigherStudiesSection";
+export { ExperienceSection } from "./ExperienceSection";
+export { PublicationsSection } from "./PublicationsSection";
+export { SocialContactSection } from "./SocialContactSection";
+export { AddressSection } from "./AddressSection";
+export { SocialLinks } from "./SocialLinks";

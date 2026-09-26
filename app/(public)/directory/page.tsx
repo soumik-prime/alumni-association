@@ -78,6 +78,8 @@ export default async function Page({
     city: params.city,
     country: params.country,
     degree: toEnumKey(params.degree, {
+      SSC: "SSC",
+      HSC: "HSC",
       MSc: "MSc",
       MBA: "MBA",
       MPhil: "MPhil",

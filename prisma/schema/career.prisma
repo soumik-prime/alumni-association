@@ -43,7 +43,7 @@ enum EmploymentType {
 model Company {
   id        String   @id @default(uuid())
   name      String   @unique
-  industry  Industry
+  industry  Industry?
   website   String?  @db.VarChar(255)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
