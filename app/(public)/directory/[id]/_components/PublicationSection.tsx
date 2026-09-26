@@ -1,4 +1,5 @@
 import { BookOpen, ExternalLink } from "lucide-react";
+
 import { Profile } from "../_types/profile.types";
 import { EmptyState } from "./shared/SectionParts";
 
@@ -6,7 +7,9 @@ interface PublicationSectionProps {
   profile: Profile;
 }
 
-export default function PublicationSection({ profile }: PublicationSectionProps) {
+export default function PublicationSection({
+  profile,
+}: PublicationSectionProps) {
   const publications = profile.publications;
 
   if (publications.length === 0) {
@@ -27,11 +30,11 @@ export default function PublicationSection({ profile }: PublicationSectionProps)
   return (
     <div className="overflow-x-auto scrollbar-none">
       <table className="w-full text-left text-sm">
-        <tbody className="divide-y divide-(--neu-gray-200) text-(--neu-gray-900)">
+        <tbody className="text-(--neu-gray-900)">
           {sorted.map((pub, i) => (
             <tr
               key={`${pub.title}-${i}`}
-              className="hover:bg-(--neu-gray-50)/50 transition-colors"
+              className="border-b border-(--neu-gray-200) transition-colors hover:bg-(--neu-gray-50)/50"
             >
               <td className="px-4 py-4 sm:px-6">
                 <div>
@@ -41,13 +44,15 @@ export default function PublicationSection({ profile }: PublicationSectionProps)
                       href={pub.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-semibold text-(--neu-gray-900) underline decoration-(--neu-gray-300) underline-offset-2 hover:text-(--neu-green) hover:decoration-(--neu-green) transition-colors"
+                      className="inline-flex items-center gap-1.5 font-semibold text-(--neu-gray-900) underline decoration-(--neu-gray-300) underline-offset-2 transition-colors hover:text-(--neu-green) hover:decoration-(--neu-green)"
                     >
                       <span>{pub.title}</span>
                       <ExternalLink className="size-3.5 shrink-0 text-(--neu-gray-400)" />
                     </a>
                   ) : (
-                    <p className="font-semibold text-(--neu-gray-900)">{pub.title}</p>
+                    <p className="font-semibold text-(--neu-gray-900)">
+                      {pub.title}
+                    </p>
                   )}
 
                   {/* Venue & Year */}

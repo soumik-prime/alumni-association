@@ -1,4 +1,5 @@
 import { Home, MapPin } from "lucide-react";
+
 import { Profile } from "../_types/profile.types";
 import { EmptyState } from "./shared/SectionParts";
 
@@ -6,7 +7,9 @@ interface LocationSectionProps {
   profile: Profile;
 }
 
-export default function LocationSection({ profile }: LocationSectionProps) {
+export default function LocationSection({
+  profile,
+}: LocationSectionProps) {
   const { presentAddress, permanentAddress } = profile;
 
   if (!presentAddress && !permanentAddress) {
@@ -31,12 +34,19 @@ export default function LocationSection({ profile }: LocationSectionProps) {
       <table className="w-full text-left text-sm">
         <thead className="sticky top-0 z-10 border-b border-(--neu-gray-200) bg-(--neu-gray-50) text-xs font-semibold uppercase tracking-wide text-(--neu-gray-500)">
           <tr>
-            <th scope="col" className="px-4 py-3 sm:px-6">Type</th>
-            <th scope="col" className="px-4 py-3 sm:px-6">City</th>
-            <th scope="col" className="px-4 py-3 sm:px-6">Country</th>
+            <th scope="col" className="px-4 py-3 sm:px-6">
+              Type
+            </th>
+            <th scope="col" className="px-4 py-3 sm:px-6">
+              City
+            </th>
+            <th scope="col" className="px-4 py-3 sm:px-6">
+              Country
+            </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-(--neu-gray-200) text-(--neu-gray-900)">
+
+        <tbody className="text-(--neu-gray-900)">
           {/* Present Address Row */}
           {presentAddress && (
             <TableRow
@@ -49,8 +59,11 @@ export default function LocationSection({ profile }: LocationSectionProps) {
 
           {/* Permanent Address Row */}
           {isSameAddress ? (
-            <tr>
-              <td colSpan={3} className="px-4 py-3.5 text-center text-xs text-(--neu-gray-400) sm:px-6">
+            <tr className="border-b border-(--neu-gray-200)">
+              <td
+                colSpan={3}
+                className="px-4 py-3.5 text-center text-xs text-(--neu-gray-400) sm:px-6"
+              >
                 Permanent address is the same as present address.
               </td>
             </tr>
@@ -80,15 +93,21 @@ function TableRow({
   country: string;
 }) {
   return (
-    <tr className="hover:bg-(--neu-gray-50)/50 transition-colors">
-      <td className="px-4 py-3.5 sm:px-6 font-medium">
+    <tr className="border-b border-(--neu-gray-200) transition-colors hover:bg-(--neu-gray-50)/50">
+      <td className="px-4 py-3.5 font-medium sm:px-6">
         <div className="flex items-center gap-2">
           <Icon className="size-4 shrink-0 text-(--neu-gray-400)" />
           <span>{label}</span>
         </div>
       </td>
-      <td className="px-4 py-3.5 sm:px-6">{city}</td>
-      <td className="px-4 py-3.5 sm:px-6 text-(--neu-gray-500)">{country}</td>
+
+      <td className="px-4 py-3.5 sm:px-6">
+        {city}
+      </td>
+
+      <td className="px-4 py-3.5 text-(--neu-gray-500) sm:px-6">
+        {country}
+      </td>
     </tr>
   );
 }

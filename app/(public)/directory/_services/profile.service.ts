@@ -13,6 +13,7 @@ import type { QueryParams } from "../_types/query-params.types";
 /** Translates user-facing filter values into a Prisma where-clause. */
 function buildProfileWhere(query: QueryParams, currentYear: number) {
   const conditions: Prisma.ProfileWhereInput[] = [];
+  conditions.push({ visible: true });
 
   const search = query.search?.trim();
   const session = query.session?.trim();

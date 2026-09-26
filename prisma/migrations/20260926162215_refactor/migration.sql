@@ -1,8 +1,8 @@
 -- CreateEnum
-CREATE TYPE "degree" AS ENUM ('MSc', 'MBA', 'MPhil', 'PhD', 'Postdoc', 'Other');
+CREATE TYPE "degree" AS ENUM ('SSC', 'HSC', 'MSc', 'MBA', 'MPhil', 'PhD', 'Postdoc', 'Other');
 
 -- CreateEnum
-CREATE TYPE "industry" AS ENUM ('Software', 'IT Services', 'Artificial Intelligence', 'Cybersecurity', 'Cloud Computing', 'Blockchain / Web3', 'Game Development', 'Embedded / IoT', 'Robotics & Automation', 'Telecom', 'Fintech', 'Banking & Finance', 'E-commerce', 'Education', 'Research & Academia', 'Government', 'Healthcare', 'Consulting', 'Startup', 'Manufacturing', 'Other');
+CREATE TYPE "industry" AS ENUM ('Software & IT Services', 'Artificial Intelligence', 'Cybersecurity', 'Cloud Computing', 'Blockchain / Web3', 'Game Development', 'Embedded / IoT', 'Robotics & Automation', 'Telecom', 'Fintech', 'Banking & Finance', 'E-commerce', 'Education', 'Research & Academia', 'Government', 'Healthcare', 'Consulting', 'Startup', 'Manufacturing', 'Other');
 
 -- CreateEnum
 CREATE TYPE "employment_type" AS ENUM ('Full-time', 'Part-time', 'Internship', 'Contract', 'Freelance', 'Self-employed', 'Temporary', 'Apprenticeship', 'Research Assistantship', 'Teaching Assistantship', 'Volunteer', 'Other');
@@ -17,7 +17,7 @@ CREATE TYPE "permission_category" AS ENUM ('System', 'User Management', 'Profile
 CREATE TYPE "blood_group" AS ENUM ('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-');
 
 -- CreateEnum
-CREATE TYPE "gender" AS ENUM ('M', 'F');
+CREATE TYPE "gender" AS ENUM ('Male', 'Female');
 
 -- CreateEnum
 CREATE TYPE "publication_type" AS ENUM ('JOURNAL', 'CONFERENCE', 'BOOK_CHAPTER', 'THESIS', 'OTHER');
@@ -37,7 +37,7 @@ CREATE TABLE "institutions" (
 );
 
 -- CreateTable
-CREATE TABLE "higher_studies" (
+CREATE TABLE "educations" (
     "id" TEXT NOT NULL,
     "student_id" TEXT NOT NULL,
     "institution_id" TEXT NOT NULL,
@@ -47,13 +47,12 @@ CREATE TABLE "higher_studies" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "higher_studies_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "educations_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
-    "profile_id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT true,
@@ -113,7 +112,7 @@ CREATE TABLE "verification" (
 CREATE TABLE "companies" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "industry" "industry" NOT NULL,
+    "industry" "industry",
     "website" VARCHAR(255),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -227,7 +226,7 @@ CREATE TABLE "profiles" (
     "id" TEXT NOT NULL,
     "reg_no" VARCHAR(9) NOT NULL,
     "name" TEXT NOT NULL,
-    "batch" INTEGER NOT NULL,
+    "batch" SMALLINT NOT NULL,
     "session" VARCHAR(7) NOT NULL,
     "graduation_year" SMALLINT,
     "photo" TEXT,
@@ -240,10 +239,9 @@ CREATE TABLE "profiles" (
     "linkedin" TEXT,
     "google_scholar" TEXT,
     "portfolio" TEXT,
+    "user_id" TEXT NOT NULL,
     "present_address_id" TEXT,
     "permanent_address_id" TEXT,
-    "ssc_institution_id" TEXT,
-    "hsc_institution_id" TEXT,
     "visible" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -285,13 +283,10 @@ CREATE TABLE "publication_authors" (
 CREATE UNIQUE INDEX "institutions_name_key" ON "institutions"("name");
 
 -- CreateIndex
-CREATE INDEX "higher_studies_student_id_idx" ON "higher_studies"("student_id");
+CREATE INDEX "educations_student_id_idx" ON "educations"("student_id");
 
 -- CreateIndex
-CREATE INDEX "higher_studies_institution_id_idx" ON "higher_studies"("institution_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "user_profile_id_key" ON "user"("profile_id");
+CREATE INDEX "educations_institution_id_idx" ON "educations"("institution_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
@@ -351,6 +346,9 @@ CREATE INDEX "user_permission_groups_group_id_idx" ON "user_permission_groups"("
 CREATE UNIQUE INDEX "profiles_reg_no_key" ON "profiles"("reg_no");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "profiles_user_id_key" ON "profiles"("user_id");
+
+-- CreateIndex
 CREATE INDEX "profiles_batch_idx" ON "profiles"("batch");
 
 -- CreateIndex
@@ -366,13 +364,10 @@ CREATE INDEX "publications_added_by_id_idx" ON "publications"("added_by_id");
 CREATE INDEX "publication_authors_student_id_idx" ON "publication_authors"("student_id");
 
 -- AddForeignKey
-ALTER TABLE "higher_studies" ADD CONSTRAINT "higher_studies_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "educations" ADD CONSTRAINT "educations_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "profiles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "higher_studies" ADD CONSTRAINT "higher_studies_institution_id_fkey" FOREIGN KEY ("institution_id") REFERENCES "institutions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "user" ADD CONSTRAINT "user_profile_id_fkey" FOREIGN KEY ("profile_id") REFERENCES "profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "educations" ADD CONSTRAINT "educations_institution_id_fkey" FOREIGN KEY ("institution_id") REFERENCES "institutions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -414,16 +409,13 @@ ALTER TABLE "user_permission_groups" ADD CONSTRAINT "user_permission_groups_user
 ALTER TABLE "user_permission_groups" ADD CONSTRAINT "user_permission_groups_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "permission_groups"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "profiles" ADD CONSTRAINT "profiles_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_present_address_id_fkey" FOREIGN KEY ("present_address_id") REFERENCES "addresses"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_permanent_address_id_fkey" FOREIGN KEY ("permanent_address_id") REFERENCES "addresses"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "profiles" ADD CONSTRAINT "profiles_ssc_institution_id_fkey" FOREIGN KEY ("ssc_institution_id") REFERENCES "institutions"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "profiles" ADD CONSTRAINT "profiles_hsc_institution_id_fkey" FOREIGN KEY ("hsc_institution_id") REFERENCES "institutions"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "publications" ADD CONSTRAINT "publications_added_by_id_fkey" FOREIGN KEY ("added_by_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

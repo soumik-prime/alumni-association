@@ -6,7 +6,9 @@ interface EducationSectionProps {
   profile: Profile;
 }
 
-export default function EducationSection({ profile }: EducationSectionProps) {
+export default function EducationSection({
+  profile,
+}: EducationSectionProps) {
   const educations = [...profile.educations].sort(
     (a, b) => (b.graduationYear ?? 0) - (a.graduationYear ?? 0),
   );
@@ -16,36 +18,52 @@ export default function EducationSection({ profile }: EducationSectionProps) {
       <table className="w-full text-left text-sm">
         <thead className="sticky top-0 z-10 border-b border-(--neu-gray-200) bg-(--neu-gray-50) text-xs font-semibold uppercase tracking-wide text-(--neu-gray-500)">
           <tr>
-            <th scope="col" className="px-4 py-3 sm:px-6">Degree</th>
-            <th scope="col" className="px-4 py-3 sm:px-6">Field</th>
-            <th scope="col" className="px-4 py-3 sm:px-6">Institution</th>
-            <th scope="col" className="px-4 py-3 sm:px-6 text-right">Passing Year</th>
+            <th scope="col" className="px-4 py-3 sm:px-6">
+              Degree
+            </th>
+            <th scope="col" className="px-4 py-3 sm:px-6">
+              Field
+            </th>
+            <th scope="col" className="px-4 py-3 sm:px-6">
+              Institution
+            </th>
+            <th scope="col" className="px-4 py-3 text-right sm:px-6">
+              Passing Year
+            </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-(--neu-gray-200) text-(--neu-gray-900)">
+
+        <tbody className="text-(--neu-gray-900)">
           {educations.map((education, index) => {
             const isSchool =
               education.degree === "SSC" || education.degree === "HSC";
+
             const Icon = isSchool ? School : GraduationCap;
 
             return (
-            <tr key={`${education.degree}-${education.institution.name}-${index}`} className="hover:bg-(--neu-gray-50)/50 transition-colors">
-              <td className="px-4 py-3.5 sm:px-6 font-medium">
-                <div className="flex items-center gap-2.5">
-                  <Icon className="size-4 shrink-0 text-(--neu-gray-400)" />
-                  <span>{formatDegree(education.degree)}</span>
-                </div>
-              </td>
-              <td className="px-4 py-3.5 sm:px-6 text-(--neu-gray-600)">
-                {education.field || "—"}
-              </td>
-              <td className="px-4 py-3.5 sm:px-6 text-(--neu-gray-600)">
-                <InstitutionLink institution={education.institution} />
-              </td>
-              <td className="px-4 py-3.5 sm:px-6 text-right font-medium text-(--neu-gray-500)">
-                {education.graduationYear ?? "—"}
-              </td>
-            </tr>
+              <tr
+                key={`${education.degree}-${education.institution.name}-${index}`}
+                className="border-b border-(--neu-gray-200) transition-colors hover:bg-(--neu-gray-50)/50"
+              >
+                <td className="px-4 py-3.5 font-medium sm:px-6">
+                  <div className="flex items-center gap-2.5">
+                    <Icon className="size-4 shrink-0 text-(--neu-gray-400)" />
+                    <span>{formatDegree(education.degree)}</span>
+                  </div>
+                </td>
+
+                <td className="px-4 py-3.5 text-(--neu-gray-600) sm:px-6">
+                  {education.field || "—"}
+                </td>
+
+                <td className="px-4 py-3.5 text-(--neu-gray-600) sm:px-6">
+                  <InstitutionLink institution={education.institution} />
+                </td>
+
+                <td className="px-4 py-3.5 text-right font-medium text-(--neu-gray-500) sm:px-6">
+                  {education.graduationYear ?? "—"}
+                </td>
+              </tr>
             );
           })}
         </tbody>

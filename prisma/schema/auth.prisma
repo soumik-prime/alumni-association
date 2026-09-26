@@ -1,21 +1,20 @@
 model User {
     id            String   @id
-    profileId      String   @unique @map("profile_id")
-    profile        Profile?  @relation(fields: [profileId], references: [id], onDelete: Cascade)
     name          String
     email         String
-    emailVerified  Boolean  @default(true)
+    emailVerified Boolean  @default(true)
     image         String?
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
 
     sessions             Session[]
     accounts             Account[]
-    siteNotifications     SiteNotification[]     @relation("CreatedNotifications")
+    siteNotifications    SiteNotification[]    @relation("CreatedNotifications")
     publications         Publication[]
     userPermissions      UserPermission[]      @relation("UserPermissions")
     grantedPermissions   UserPermission[]      @relation("GrantedPermissions")
     userPermissionGroups UserPermissionGroup[] @relation("UserGroups")
+    profile              Profile?
 
     @@unique([email])
     @@map("user")

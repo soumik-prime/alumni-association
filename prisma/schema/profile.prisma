@@ -12,8 +12,8 @@ enum BloodGroup {
 }
 
 enum Gender {
-  MALE   @map("M")
-  FEMALE @map("F")
+  MALE   @map("Male")
+  FEMALE @map("Female")
 
   @@map("gender")
 }
@@ -38,6 +38,10 @@ model Profile {
   googleScholar String?     @map("google_scholar")
   portfolio     String?
 
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
   presentAddressId   String?  @map("present_address_id")
   presentAddress     Address? @relation("PresentAddress", fields: [presentAddressId], references: [id])
   permanentAddressId String?  @map("permanent_address_id")
@@ -50,7 +54,6 @@ model Profile {
   workExperiences    WorkExperience[]
   publicationAuthors PublicationAuthor[]
   educations         Education[]
-  user               User?
 
   @@index([batch])
   @@map("profiles")
