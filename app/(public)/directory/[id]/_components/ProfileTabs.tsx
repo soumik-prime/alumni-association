@@ -75,7 +75,7 @@ export default function ProfileTabs({ profile }: ProfileTabsProps) {
         role="tabpanel"
         aria-labelledby={`tab-${activeTab.toLowerCase()}`}
         tabIndex={0}
-        className="min-h-[14rem] max-h-[30rem] overflow-y-auto scrollbar-none bg-(--neu-white)"
+        className="min-h-56 max-h-120 overflow-y-auto scrollbar-none bg-(--neu-white)"
       >
         <ActivePanel profile={profile} />
       </div>

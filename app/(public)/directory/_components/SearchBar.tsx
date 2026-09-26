@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 
 export default function SearchBar({
-  placeholder = "Search by name, batch, or location...",
+  placeholder = "Search by name or registration no...",
   paramKey = "search",
   debounceMs = 600,
 }: {

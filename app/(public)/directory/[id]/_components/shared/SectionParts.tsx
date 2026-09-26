@@ -13,7 +13,7 @@ interface EmptyStateProps {
 /** Shown in place of a section's content when there's nothing to display yet. */
 export function EmptyState({ icon: Icon, title, message }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center gap-3 h-auto rounded-b-(--neu-radius-lg) border border-dashed border-(--neu-gray-200) px-6 py-12 text-center">
+    <div className="flex flex-col items-center gap-3 px-6 py-12 text-center">
       <span className="inline-flex size-11 items-center justify-center rounded-full bg-(--neu-gray-50) text-(--neu-gray-400)">
         <Icon className="size-5" />
       </span>

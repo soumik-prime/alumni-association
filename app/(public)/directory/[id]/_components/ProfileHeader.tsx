@@ -70,18 +70,18 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
     <section className="overflow-hidden p-4 lg:pt-12 lg:pb-6">
       <div className="flex flex-col gap-5 md:flex-row md:items-stretch md:gap-6">
         {/* Profile Photo */}
-        <div className="group relative mx-auto h-48 w-48 shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:h-56 sm:w-56 md:mx-0 md:h-auto md:w-64">
+        <div className="group relative rounded-2xl mx-auto h-48 w-48 shrink-0 overflow-hidden bg-transparent sm:h-56 sm:w-56 md:mx-0 md:h-56 md:w-56">
           <Image
             src={profile.photo}
             alt={`Photo of ${profile.name}`}
             fill
             sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, 256px"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            className="object-cover bg-white/60 transition-transform duration-300 group-hover:scale-[1.03]"
             priority
           />
 
           {/* Soft edge fade */}
-          <div className="pointer-events-none absolute inset-0 rounded-xl shadow-[inset_0_0_18px_6px_rgba(255,255,255,0.3)]" />
+          {/* <div className="pointer-events-none absolute inset-0 rounded-xl shadow-[inset_0_0_18px_6px_rgba(255,255,255,0.3)]" /> */}
         </div>
 
         {/* Content */}
