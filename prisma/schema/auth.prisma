@@ -13,6 +13,7 @@ model User {
     publications         Publication[]
     userPermissions      UserPermission[]      @relation("UserPermissions")
     grantedPermissions   UserPermission[]      @relation("GrantedPermissions")
+    revokedPermissions   UserPermission[]      @relation("RevokedPermissions")
     userPermissionGroups UserPermissionGroup[] @relation("UserGroups")
     profile              Profile?
 

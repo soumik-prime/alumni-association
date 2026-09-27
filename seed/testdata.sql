@@ -372,131 +372,133 @@ INSERT INTO "publication_authors" ("publication_id", "student_id", "author_order
 ('pub_21', 'prof_03', 1, NULL, '2024-05-02 09:00:00', '2024-05-02 09:00:00'),
 ('pub_22', 'prof_09', 1, NULL, '2024-05-02 09:00:00', '2024-05-02 09:00:00'),
 ('pub_22', NULL, 2, 'International Symposium Committee', '2024-05-02 09:00:00', '2024-05-02 09:00:00');
-
 -- ---------------------------------------------------------------------
--- permissions (22 rows) -- every permission_category value used
+-- permissions (37 rows)
 -- ---------------------------------------------------------------------
 INSERT INTO "permissions" ("id", "key", "description", "category") VALUES
-('perm_01', 'system.settings.manage', 'Manage global system settings', 'System'),
-('perm_02', 'system.audit_log.view', 'View system audit logs', 'System'),
-('perm_03', 'users.create', 'Create new user accounts', 'User Management'),
-('perm_04', 'users.delete', 'Delete user accounts', 'User Management'),
-('perm_05', 'users.role.assign', 'Assign roles to users', 'User Management'),
-('perm_06', 'profile.edit.own', 'Edit own alumni profile', 'Profile'),
-('perm_07', 'profile.edit.any', 'Edit any alumni profile', 'Profile'),
-('perm_08', 'profile.visibility.toggle', NULL, 'Profile'),
-('perm_09', 'profile.verify', 'Verify a submitted alumni profile', 'Profile'),
-('perm_10', 'notifications.create', 'Create site notifications', 'Notifications'),
-('perm_11', 'notifications.delete', 'Delete site notifications', 'Notifications'),
-('perm_12', 'notifications.publish', 'Publish scheduled notifications', 'Notifications'),
-('perm_13', 'publications.create', 'Add a new publication record', 'Publications'),
-('perm_14', 'publications.edit', 'Edit an existing publication record', 'Publications'),
-('perm_15', 'publications.review', 'Review submitted publications', 'Publications'),
-('perm_16', 'publications.delete', 'Delete a publication record', 'Publications'),
-('perm_17', 'export.data', 'Export alumni directory data', 'Other'),
-('perm_18', 'reports.generate', 'Generate statistical reports', 'Other'),
-('perm_19', 'system.backup.trigger', 'Trigger a manual database backup', 'System'),
-('perm_20', 'users.impersonate', 'Impersonate another user account for support', 'User Management'),
-('perm_21', 'profile.education.manage', 'Manage education records on any profile', 'Profile'),
-('perm_22', 'profile.work_experience.manage', 'Manage work experience records on any profile', 'Profile');
+('perm_01', 'profile.create', 'Create your own profile (self only — no creating on behalf of others in MVP)', 'Profile'),
+('perm_02', 'profile.edit.own', 'Edit your own profile (identity, social, address)', 'Profile'),
+('perm_03', 'profile.edit.any', 'Edit any alumnus''s profile', 'Profile'),
+('perm_04', 'profile.delete', 'Delete a profile — grants apply to others'' profiles only; self-delete stays blocked regardless of this grant', 'Profile'),
+('perm_05', 'profile.delete.request', 'Submit a request to delete your own profile, pending review', 'Profile'),
+('perm_06', 'profile.visibility.toggle', 'Show/hide a profile from the public directory', 'Profile'),
+('perm_07', 'profile.education.manage.own', 'Add/edit/delete education records on your own profile', 'Profile'),
+('perm_08', 'profile.education.manage.any', 'Add/edit/delete education records on any profile', 'Profile'),
+('perm_09', 'profile.work_experience.manage.own', 'Add/edit/delete work experience records on your own profile', 'Profile'),
+('perm_10', 'profile.work_experience.manage.any', 'Add/edit/delete work experience records on any profile', 'Profile'),
+('perm_11', 'directory.view', 'View the public alumni directory', 'Directory'),
+('perm_12', 'directory.view_hidden', 'View profiles that have opted out of the public directory', 'Directory'),
+('perm_13', 'users.create', 'Register a new account', 'User Management'),
+('perm_14', 'users.delete', 'Delete a user account', 'User Management'),
+('perm_15', 'permissions.grant', 'Grant or revoke direct permissions on a user', 'Permission Management'),
+('perm_16', 'permissions.groups.manage', 'Create/edit permission groups and their permission sets', 'Permission Management'),
+('perm_17', 'permissions.groups.assign', 'Add/remove a user from a permission group', 'Permission Management'),
+('perm_18', 'notifications.create', 'Create site notifications', 'Notifications'),
+('perm_19', 'notifications.edit', 'Edit an existing site notification', 'Notifications'),
+('perm_20', 'notifications.delete', 'Delete site notifications', 'Notifications'),
+('perm_21', 'notifications.publish', 'Publish/schedule notifications live', 'Notifications'),
+('perm_22', 'companies.create', 'Add a new company/organization', 'Reference Data'),
+('perm_23', 'companies.edit', 'Edit an existing company/organization', 'Reference Data'),
+('perm_24', 'companies.delete', 'Delete a company/organization', 'Reference Data'),
+('perm_25', 'companies.request', 'Submit a request to add a new company/organization, pending review', 'Reference Data'),
+('perm_26', 'institutions.create', 'Add a new educational institution', 'Reference Data'),
+('perm_27', 'institutions.edit', 'Edit an existing educational institution', 'Reference Data'),
+('perm_28', 'institutions.delete', 'Delete an educational institution', 'Reference Data'),
+('perm_29', 'institutions.request', 'Submit a request to add a new educational institution, pending review', 'Reference Data'),
+('perm_30', 'cities.create', 'Add a new city', 'Reference Data'),
+('perm_31', 'cities.edit', 'Edit an existing city', 'Reference Data'),
+('perm_32', 'cities.delete', 'Delete a city', 'Reference Data'),
+('perm_33', 'countries.create', 'Add a new country', 'Reference Data'),
+('perm_34', 'countries.edit', 'Edit an existing country', 'Reference Data'),
+('perm_35', 'countries.delete', 'Delete a country', 'Reference Data'),
+('perm_36', 'countries.request', 'Submit a request to add a new country, pending review', 'Reference Data'),
+('perm_37', 'reference_data.review', 'Review, approve, or reject submitted reference-data requests', 'Reference Data');
 
 -- ---------------------------------------------------------------------
--- permission_groups (20 rows)
+-- permission_groups (7 rows)
 -- ---------------------------------------------------------------------
 INSERT INTO "permission_groups" ("id", "name", "description") VALUES
 ('pg_01', 'Super Admin', 'Full unrestricted access to every part of the platform'),
-('pg_02', 'Administrator', 'Manage users, content and site-wide settings'),
-('pg_03', 'Moderator', 'Review and moderate submitted alumni content'),
-('pg_04', 'Content Editor', 'Create and edit publications and notifications'),
-('pg_05', 'Publication Reviewer', 'Review and approve publication submissions'),
-('pg_06', 'Alumni Verified', 'Verified alumni with full profile access'),
-('pg_07', 'Alumni Unverified', 'Newly registered alumni pending verification'),
-('pg_08', 'Current Student', 'Currently enrolled student with limited access'),
-('pg_09', 'Club Executive - NEUPC', 'Programming club executive committee member'),
-('pg_10', 'Club Executive - NEUCC', 'Computer club executive committee member'),
-('pg_11', 'Read Only Viewer', 'View-only access with no edit permissions'),
-('pg_12', 'Support Staff', 'Handles user support requests and impersonation'),
-('pg_13', 'Data Analyst', 'Access to reports and data export tools'),
-('pg_14', 'Notification Manager', 'Manages site-wide notifications and announcements'),
-('pg_15', 'Profile Curator', 'Curates and verifies alumni profile submissions'),
-('pg_16', 'Backup Operator', 'Handles scheduled and manual database backups'),
-('pg_17', 'Guest', 'Unauthenticated or minimal-access guest role'),
-('pg_18', 'Department Faculty', 'CSE department faculty member account'),
-('pg_19', 'External Collaborator', 'External partner with restricted, scoped access'),
-('pg_20', 'Legacy Migration Bot', 'System service account used for historical data imports');
+('pg_02', 'Verified Member', 'Verified alumni/student with a claimed profile and self-service access'),
+('pg_03', 'Profile Moderator', 'Handles alumni data quality — can fix/hide/remove any profile and its records'),
+('pg_04', 'User Manager', 'Handles account provisioning and deprovisioning only'),
+('pg_05', 'Access Manager', 'Controls permission grants and permission group membership'),
+('pg_06', 'Notification Manager', 'Manages site-wide notifications and announcements'),
+('pg_07', 'Reference Data Manager', 'Manages companies, institutions, cities, countries and reviews submitted requests');
 
 -- ---------------------------------------------------------------------
--- permission_group_items (31 rows) -- composite PK (group_id, permission_id)
+-- permission_group_items (37 rows) -- composite PK (group_id, permission_id)
 -- ---------------------------------------------------------------------
 INSERT INTO "permission_group_items" ("group_id", "permission_id") VALUES
-('pg_01', 'perm_01'), ('pg_01', 'perm_02'), ('pg_01', 'perm_03'), ('pg_01', 'perm_04'), ('pg_01', 'perm_05'), ('pg_01', 'perm_19'),
-('pg_02', 'perm_03'), ('pg_02', 'perm_06'), ('pg_02', 'perm_07'), ('pg_02', 'perm_10'), ('pg_02', 'perm_13'), ('pg_02', 'perm_17'),
-('pg_03', 'perm_07'), ('pg_03', 'perm_09'), ('pg_03', 'perm_15'),
-('pg_04', 'perm_13'), ('pg_04', 'perm_14'), ('pg_04', 'perm_10'),
-('pg_05', 'perm_15'), ('pg_05', 'perm_16'),
-('pg_06', 'perm_06'),
-('pg_14', 'perm_10'), ('pg_14', 'perm_11'), ('pg_14', 'perm_12'),
-('pg_12', 'perm_20'),
-('pg_13', 'perm_17'), ('pg_13', 'perm_18'),
-('pg_16', 'perm_19'),
-('pg_15', 'perm_09'), ('pg_15', 'perm_21'), ('pg_15', 'perm_22');
+-- Super Admin: all 37
+('pg_01', 'perm_01'), ('pg_01', 'perm_02'), ('pg_01', 'perm_03'), ('pg_01', 'perm_04'), ('pg_01', 'perm_05'),
+('pg_01', 'perm_06'), ('pg_01', 'perm_07'), ('pg_01', 'perm_08'), ('pg_01', 'perm_09'), ('pg_01', 'perm_10'),
+('pg_01', 'perm_11'), ('pg_01', 'perm_12'), ('pg_01', 'perm_13'), ('pg_01', 'perm_14'), ('pg_01', 'perm_15'),
+('pg_01', 'perm_16'), ('pg_01', 'perm_17'), ('pg_01', 'perm_18'), ('pg_01', 'perm_19'), ('pg_01', 'perm_20'),
+('pg_01', 'perm_21'), ('pg_01', 'perm_22'), ('pg_01', 'perm_23'), ('pg_01', 'perm_24'), ('pg_01', 'perm_25'),
+('pg_01', 'perm_26'), ('pg_01', 'perm_27'), ('pg_01', 'perm_28'), ('pg_01', 'perm_29'), ('pg_01', 'perm_30'),
+('pg_01', 'perm_31'), ('pg_01', 'perm_32'), ('pg_01', 'perm_33'), ('pg_01', 'perm_34'), ('pg_01', 'perm_35'),
+('pg_01', 'perm_36'), ('pg_01', 'perm_37'),
+-- Verified Member
+('pg_02', 'perm_01'), ('pg_02', 'perm_02'), ('pg_02', 'perm_05'), ('pg_02', 'perm_07'), ('pg_02', 'perm_09'),
+('pg_02', 'perm_25'), ('pg_02', 'perm_29'), ('pg_02', 'perm_30'), ('pg_02', 'perm_36'),
+-- Profile Moderator
+('pg_03', 'perm_03'), ('pg_03', 'perm_04'), ('pg_03', 'perm_06'), ('pg_03', 'perm_08'), ('pg_03', 'perm_10'), ('pg_03', 'perm_12'),
+-- User Manager
+('pg_04', 'perm_13'), ('pg_04', 'perm_14'),
+-- Access Manager
+('pg_05', 'perm_15'), ('pg_05', 'perm_16'), ('pg_05', 'perm_17'),
+-- Notification Manager
+('pg_06', 'perm_18'), ('pg_06', 'perm_19'), ('pg_06', 'perm_20'), ('pg_06', 'perm_21'),
+-- Reference Data Manager
+('pg_07', 'perm_22'), ('pg_07', 'perm_23'), ('pg_07', 'perm_24'), ('pg_07', 'perm_26'), ('pg_07', 'perm_27'),
+('pg_07', 'perm_28'), ('pg_07', 'perm_30'), ('pg_07', 'perm_31'), ('pg_07', 'perm_32'), ('pg_07', 'perm_33'),
+('pg_07', 'perm_34'), ('pg_07', 'perm_35'), ('pg_07', 'perm_37');
 
 -- ---------------------------------------------------------------------
--- user_permissions (24 rows)
--- ---------------------------------------------------------------------
-INSERT INTO "user_permissions" ("id", "user_id", "permission_id", "granted_by_id", "granted_at", "expire_at") VALUES
-('up_01', 'user_01', 'perm_01', NULL, '2023-01-01 00:00:00', NULL),
-('up_02', 'user_01', 'perm_19', 'user_01', '2023-01-01 00:00:00', NULL),
-('up_03', 'user_05', 'perm_13', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_04', 'user_05', 'perm_14', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_05', 'user_03', 'perm_15', 'user_01', '2024-01-06 10:00:00', '2025-12-31 23:59:59'),
-('up_06', 'user_03', 'perm_09', 'user_05', '2024-01-06 10:00:00', NULL),
-('up_07', 'user_08', 'perm_16', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_08', 'user_08', 'perm_13', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_09', 'user_11', 'perm_10', 'user_05', '2024-01-06 10:00:00', NULL),
-('up_10', 'user_11', 'perm_11', 'user_05', '2024-01-06 10:00:00', '2024-06-30 23:59:59'),
-('up_11', 'user_13', 'perm_17', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_12', 'user_13', 'perm_18', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_13', 'user_15', 'perm_20', NULL, '2024-01-06 10:00:00', NULL),
-('up_14', 'user_17', 'perm_06', 'user_05', '2024-01-06 10:00:00', NULL),
-('up_15', 'user_17', 'perm_21', 'user_05', '2024-01-06 10:00:00', NULL),
-('up_16', 'user_01', 'perm_02', NULL, '2023-01-01 00:00:00', NULL),
-('up_17', 'user_05', 'perm_05', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_18', 'user_03', 'perm_22', 'user_05', '2024-01-06 10:00:00', NULL),
-('up_19', 'user_08', 'perm_07', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_20', 'user_11', 'perm_12', 'user_05', '2024-01-06 10:00:00', NULL),
-('up_21', 'user_13', 'perm_04', 'user_01', '2024-01-06 10:00:00', '2025-01-01 00:00:00'),
-('up_22', 'user_15', 'perm_03', 'user_01', '2024-01-06 10:00:00', NULL),
-('up_23', 'user_17', 'perm_08', NULL, '2024-01-06 10:00:00', NULL),
-('up_24', 'user_01', 'perm_09', 'user_01', '2023-01-01 00:00:00', NULL);
-
--- ---------------------------------------------------------------------
--- user_permission_groups (23 rows) -- composite PK (user_id, group_id)
+-- user_permission_groups -- one primary group per user, spread across
+-- the 22 seeded users so every group has at least one member
 -- ---------------------------------------------------------------------
 INSERT INTO "user_permission_groups" ("user_id", "group_id", "granted_at") VALUES
-('user_01', 'pg_01', '2023-01-01 00:00:00'),
-('user_01', 'pg_02', '2023-01-01 00:00:00'),
-('user_01', 'pg_17', '2023-01-01 00:00:00'),
-('user_05', 'pg_02', '2024-01-06 10:00:00'),
-('user_05', 'pg_04', '2024-01-06 10:00:00'),
-('user_05', 'pg_18', '2024-01-06 10:00:00'),
-('user_03', 'pg_05', '2024-01-06 10:00:00'),
-('user_03', 'pg_15', '2024-01-06 10:00:00'),
-('user_03', 'pg_03', '2024-01-06 10:00:00'),
-('user_08', 'pg_04', '2024-01-06 10:00:00'),
-('user_08', 'pg_09', '2024-01-06 10:00:00'),
-('user_08', 'pg_06', '2024-01-06 10:00:00'),
-('user_11', 'pg_14', '2024-01-06 10:00:00'),
-('user_11', 'pg_10', '2024-01-06 10:00:00'),
-('user_11', 'pg_06', '2024-01-06 10:00:00'),
-('user_13', 'pg_13', '2024-01-06 10:00:00'),
-('user_13', 'pg_11', '2024-01-06 10:00:00'),
-('user_13', 'pg_19', '2024-01-06 10:00:00'),
-('user_15', 'pg_12', '2024-01-06 10:00:00'),
-('user_15', 'pg_17', '2024-01-06 10:00:00'),
-('user_17', 'pg_06', '2024-01-06 10:00:00'),
-('user_17', 'pg_10', '2024-01-06 10:00:00'),
-('user_17', 'pg_08', '2024-01-06 10:00:00');
+('user_01', 'pg_01', '2023-01-01 00:00:00'), -- Super Admin
+('user_03', 'pg_03', '2024-01-06 10:00:00'), -- Profile Moderator
+('user_05', 'pg_04', '2024-01-06 10:00:00'), -- User Manager
+('user_08', 'pg_05', '2024-01-06 10:00:00'), -- Access Manager
+('user_11', 'pg_06', '2024-01-06 10:00:00'), -- Notification Manager
+('user_13', 'pg_07', '2024-01-06 10:00:00'), -- Reference Data Manager
+('user_02', 'pg_02', '2024-01-06 10:00:00'),
+('user_04', 'pg_02', '2024-01-06 10:00:00'),
+('user_06', 'pg_02', '2024-01-06 10:00:00'),
+('user_07', 'pg_02', '2024-01-06 10:00:00'),
+('user_09', 'pg_02', '2024-01-06 10:00:00'),
+('user_10', 'pg_02', '2024-01-06 10:00:00'),
+('user_12', 'pg_02', '2024-01-06 10:00:00'),
+('user_14', 'pg_02', '2024-01-06 10:00:00'),
+('user_15', 'pg_02', '2024-01-06 10:00:00'),
+('user_16', 'pg_02', '2024-01-06 10:00:00'),
+('user_17', 'pg_02', '2024-01-06 10:00:00'),
+('user_18', 'pg_02', '2024-01-06 10:00:00'),
+('user_19', 'pg_02', '2024-01-06 10:00:00'),
+('user_20', 'pg_02', '2024-01-06 10:00:00'),
+('user_21', 'pg_02', '2024-01-06 10:00:00'),
+('user_22', 'pg_02', '2024-01-06 10:00:00');
+
+-- ---------------------------------------------------------------------
+-- user_permissions (10 rows) -- direct grants layered on top of group
+-- membership, kept as edge cases: NULL granted_by, self-grant, expired
+-- grant, future-expiring grant
+-- ---------------------------------------------------------------------
+INSERT INTO "user_permissions" ("id", "user_id", "permission_id", "granted_by_id", "granted_at", "expire_at") VALUES
+('up_01', 'user_01', 'perm_37', 'user_01', '2023-01-01 00:00:00', NULL), -- EDGE: self-granted bootstrap
+('up_02', 'user_04', 'perm_22', 'user_01', '2024-02-01 09:00:00', NULL), -- trusted member given extra reference-data access
+('up_03', 'user_06', 'perm_27', 'user_13', '2024-03-01 09:00:00', '2026-12-31 23:59:59'), -- EDGE: future expiry
+('up_04', 'user_09', 'perm_18', 'user_11', '2024-03-01 09:00:00', NULL),
+('up_05', 'user_14', 'perm_12', 'user_03', '2024-01-06 10:00:00', '2024-06-30 23:59:59'), -- EDGE: already-expired grant
+('up_06', 'user_17', 'perm_15', NULL, '2024-01-06 10:00:00', NULL), -- EDGE: NULL granted_by
+('up_07', 'user_20', 'perm_03', 'user_01', '2024-04-01 09:00:00', NULL), -- elevated single member
+('up_08', 'user_22', 'perm_31', 'user_13', '2024-04-01 09:00:00', NULL),
+('up_09', 'user_02', 'perm_06', 'user_03', '2024-04-01 09:00:00', NULL),
+('up_10', 'user_10', 'perm_25', NULL, '2024-01-06 10:00:00', NULL); -- EDGE: NULL granted_by
 
 -- ---------------------------------------------------------------------
 -- site_notifications (22 rows) -- every notification_type value used

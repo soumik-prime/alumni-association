@@ -1,149 +1,274 @@
-import dotenv from "dotenv";
-import { hashPassword } from "better-auth/crypto";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient, PermissionCategory } from "../generated/prisma/client";
+import { PermissionCategory } from "../generated/prisma/client";
+import { auth } from "@/lib/auth/auth";
+import { generateSecurePassword } from "@/lib/auth/generate-password";
+import { prisma } from "@/lib/prisma/prisma";
 
-dotenv.config({ path: ".env.local" });
-dotenv.config({ path: ".env" });
 
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  throw new Error("DATABASE_URL is required to seed the database.");
+if (!process.env.BOOTSTRAP_EMAIL || !process.env.BOOTSTRAP_NAME ) {
+  throw new Error(
+    "BOOTSTRAP_EMAIL, BOOTSTRAP_NAME and SEED_ADMIN_PASSWORD are required to seed the database.",
+  );
 }
+const bootstrapEmail: string = process.env.BOOTSTRAP_EMAIL;
+const bootstrapName: string = process.env.BOOTSTRAP_NAME;
+const bootstrapPassword: string = generateSecurePassword();
 
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
-
-const bootstrapProfile = {
-  id: "bootstrap-profile",
-  regNo: "BOOTSTRAP",
-  name: "System Administrator",
-  batch: 0,
-  session: "System",
-};
-
-const bootstrapUser = {
-  id: "bootstrap-user",
-  email: process.env.SEED_ADMIN_EMAIL ?? "admin@alumni.local",
-  name: bootstrapProfile.name,
-};
-
-const bootstrapPassword = process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe123!";
-
-const permissions = [
+export const permissions = [
+  // ---- Profile ----
   {
-    key: "users.manage",
-    description: "Manage user accounts",
+    key: "profile.create",
+    description:
+      "Create your own profile (self only — no creating on behalf of others)",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.edit.own",
+    description: "Edit your own profile (identity, social, address)",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.edit.any",
+    description: "Edit any community member's profile",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.delete",
+    description:
+      "Delete a profile — grants apply to others' profiles only; self-delete stays blocked regardless of this grant",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.delete.request",
+    description: "Submit a request to delete your own profile, pending review",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.visibility.toggle",
+    description: "Show/hide a profile from the public directory",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.education.manage.own",
+    description: "Add/edit/delete education records on your own profile",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.education.manage.any",
+    description: "Add/edit/delete education records on any profile",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.work_experience.manage.own",
+    description: "Add/edit/delete work experience records on your own profile",
+    category: PermissionCategory.PROFILE,
+  },
+  {
+    key: "profile.work_experience.manage.any",
+    description: "Add/edit/delete work experience records on any profile",
+    category: PermissionCategory.PROFILE,
+  },
+
+  // ---- Directory ----
+  {
+    key: "directory.view",
+    description: "View the public alumni directory",
+    category: PermissionCategory.DIRECTORY,
+  },
+  {
+    key: "directory.view_hidden",
+    description: "View profiles that have opted out of the public directory",
+    category: PermissionCategory.DIRECTORY,
+  },
+
+  // ---- User Management ----
+  {
+    key: "users.create",
+    description: "Register a new account",
     category: PermissionCategory.USER_MANAGEMENT,
   },
   {
-    key: "profiles.manage",
-    description: "Manage alumni profiles",
-    category: PermissionCategory.PROFILE,
-  },
-  {
-    key: "permissions.manage",
-    description: "Manage permission definitions",
+    key: "users.delete",
+    description: "Delete a user account",
     category: PermissionCategory.USER_MANAGEMENT,
   },
+
+  // ---- Permission Management ----
   {
-    key: "permission-groups.manage",
-    description: "Manage permission groups",
-    category: PermissionCategory.USER_MANAGEMENT,
+    key: "permissions.grant",
+    description: "Grant or revoke direct permissions on a user",
+    category: PermissionCategory.PERMISSION_MANAGEMENT,
   },
   {
-    key: "institutions.manage",
-    description: "Manage academic institutions",
-    category: PermissionCategory.OTHER,
+    key: "permissions.groups.manage",
+    description: "Create/edit permission groups and their permission sets",
+    category: PermissionCategory.PERMISSION_MANAGEMENT,
   },
   {
-    key: "companies.manage",
-    description: "Manage companies",
-    category: PermissionCategory.OTHER,
+    key: "permissions.groups.assign",
+    description: "Add/remove a user from a permission group",
+    category: PermissionCategory.PERMISSION_MANAGEMENT,
   },
+
+  // ---- Notifications ----
   {
-    key: "countries.manage",
-    description: "Manage countries",
-    category: PermissionCategory.OTHER,
-  },
-  {
-    key: "addresses.manage",
-    description: "Manage profile addresses",
-    category: PermissionCategory.PROFILE,
-  },
-  {
-    key: "higher-studies.manage",
-    description: "Manage higher studies",
-    category: PermissionCategory.PROFILE,
-  },
-  {
-    key: "work-experiences.manage",
-    description: "Manage work experiences",
-    category: PermissionCategory.PROFILE,
-  },
-  {
-    key: "publications.manage",
-    description: "Manage publications",
-    category: PermissionCategory.PUBLICATIONS,
-  },
-  {
-    key: "notifications.manage",
-    description: "Manage site notifications",
+    key: "notifications.create",
+    description: "Create site notifications",
     category: PermissionCategory.NOTIFICATIONS,
   },
   {
-    key: "system.manage",
-    description: "Manage system settings",
-    category: PermissionCategory.SYSTEM,
+    key: "notifications.edit",
+    description: "Edit an existing site notification",
+    category: PermissionCategory.NOTIFICATIONS,
+  },
+  {
+    key: "notifications.delete",
+    description: "Delete site notifications",
+    category: PermissionCategory.NOTIFICATIONS,
+  },
+  {
+    key: "notifications.publish",
+    description: "Publish/schedule notifications live",
+    category: PermissionCategory.NOTIFICATIONS,
+  },
+
+  // ---- Reference Data: Companies ----
+  {
+    key: "companies.create",
+    description: "Add a new company/organization",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "companies.edit",
+    description: "Edit an existing company/organization",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "companies.delete",
+    description: "Delete a company/organization",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "companies.request",
+    description:
+      "Submit a request to add a new company/organization, pending review",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+
+  // ---- Reference Data: Institutions ----
+  {
+    key: "institutions.create",
+    description: "Add a new educational institution",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "institutions.edit",
+    description: "Edit an existing educational institution",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "institutions.delete",
+    description: "Delete an educational institution",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "institutions.request",
+    description:
+      "Submit a request to add a new educational institution, pending review",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+
+  // ---- Reference Data: Cities ----
+  {
+    key: "cities.create",
+    description: "Add a new city",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "cities.edit",
+    description: "Edit an existing city",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "cities.delete",
+    description: "Delete a city",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+
+  // ---- Reference Data: Countries ----
+  {
+    key: "countries.create",
+    description: "Add a new country",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "countries.edit",
+    description: "Edit an existing country",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "countries.delete",
+    description: "Delete a country",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+  {
+    key: "countries.request",
+    description: "Submit a request to add a new country, pending review",
+    category: PermissionCategory.REFERENCE_DATA,
+  },
+
+  // ---- Reference Data: Review ----
+  {
+    key: "reference_data.review",
+    description:
+      "Review, approve, or reject submitted reference-data requests",
+    category: PermissionCategory.REFERENCE_DATA,
   },
 ] as const;
 
 async function main() {
-  const password = await hashPassword(bootstrapPassword);
+  // ---------------------------------------------------------------
+  // 1. Bootstrap account — created THROUGH better-auth, not by hand.
+  //    Hashing the password and writing directly into "account"
+  //    ourselves risks drifting from whatever shape/hooks better-auth
+  //    actually expects there. signUpEmail is the same path a real
+  //    user hits when registering, so the resulting row is guaranteed
+  //    consistent with everything else the auth system manages.
+  // ---------------------------------------------------------------
+  let user = await prisma.user.findUnique({ where: { email: bootstrapEmail } });
 
-  const profile = await prisma.profile.upsert({
-    where: { regNo: bootstrapProfile.regNo },
-    update: {
-      name: bootstrapProfile.name,
-      batch: bootstrapProfile.batch,
-      session: bootstrapProfile.session,
-    },
-    create: bootstrapProfile,
+  if (!user) {
+    const signUpResult = await auth.api.signUpEmail({
+      body: {
+        email: bootstrapEmail,
+        name: bootstrapName,
+        password: bootstrapPassword,
+      },
+    });
+    user = await prisma.user.findUniqueOrThrow({
+      where: { id: signUpResult.user.id },
+    });
+  }
+
+  // better-auth's signUpEmail leaves emailVerified false by default —
+  // force it true for the seeded bootstrap admin, and keep the name
+  // in sync in case BOOTSTRAP_NAME changed since the account was made.
+  user = await prisma.user.update({
+    where: { id: user.id },
+    data: { emailVerified: true, name: bootstrapName },
   });
 
-  const user = await prisma.user.upsert({
-    where: { email: bootstrapUser.email },
-    update: {
-      name: bootstrapUser.name,
-      profileId: profile.id,
-      emailVerified: true,
-    },
-    create: {
-      ...bootstrapUser,
-      profileId: profile.id,
-      emailVerified: true,
-    },
-  });
+  // NOTE: Profile.userId is required, but User.profile is optional —
+  // an admin/operator account like this one is not necessarily an
+  // alumnus, so no Profile is created here. If this bootstrap account
+  // should also appear in the alumni directory, create a Profile
+  // afterward with userId: user.id (Profile must come after User,
+  // since the FK now lives on Profile, not the other way around).
 
-  await prisma.account.upsert({
-    where: { id: "bootstrap-account" },
-    update: {
-      accountId: user.id,
-      providerId: "credential",
-      userId: user.id,
-      password,
-    },
-    create: {
-      id: "bootstrap-account",
-      accountId: user.id,
-      providerId: "credential",
-      userId: user.id,
-      password,
-    },
-  });
-
-  const seededPermissions = await Promise.all(
+  // ---------------------------------------------------------------
+  // 2. Permissions — upsert every permission definition by its key
+  //    (key IS the primary key now, no separate generated id).
+  // ---------------------------------------------------------------
+  await Promise.all(
     permissions.map((permission) =>
       prisma.permission.upsert({
         where: { key: permission.key },
@@ -156,32 +281,43 @@ async function main() {
     ),
   );
 
+  const allPermissionKeys = permissions.map((p) => p.key);
+
+  // ---------------------------------------------------------------
+  // 3. Super Admin permission group — system-protected (isSystem),
+  //    holds every permission key in the table.
+  // ---------------------------------------------------------------
   const permissionGroup = await prisma.permissionGroup.upsert({
     where: { name: "Super Admin" },
     update: {
       description: "Full access to all system management areas",
+      isSystem: true,
     },
     create: {
       name: "Super Admin",
       description: "Full access to all system management areas",
+      isSystem: true,
     },
   });
 
   await prisma.permissionGroupItem.deleteMany({
     where: {
       groupId: permissionGroup.id,
-      permissionId: { notIn: seededPermissions.map(({ id }) => id) },
+      permissionKey: { notIn: allPermissionKeys },
     },
   });
 
   await prisma.permissionGroupItem.createMany({
-    data: seededPermissions.map(({ id }) => ({
+    data: allPermissionKeys.map((permissionKey) => ({
       groupId: permissionGroup.id,
-      permissionId: id,
+      permissionKey,
     })),
     skipDuplicates: true,
   });
 
+  // ---------------------------------------------------------------
+  // 4. Put the bootstrap user in the Super Admin group.
+  // ---------------------------------------------------------------
   await prisma.userPermissionGroup.upsert({
     where: {
       userId_groupId: {
@@ -196,7 +332,7 @@ async function main() {
     },
   });
 
-  console.log(`Seeded Super Admin access for ${bootstrapUser.email}.`);
+  console.log(`Seeded Super Admin access for ${user.email} with password: ${bootstrapPassword}`);
 }
 
 main()

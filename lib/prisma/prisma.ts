@@ -1,10 +1,11 @@
+import "server-only";
 import "dotenv/config";
-
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../generated/prisma/client";
 import { normalizeDatabaseUrl } from "./connection";
+import { envVariables } from "@/config/env";
 
-const connectionString = normalizeDatabaseUrl(process.env.DATABASE_URL);
+const connectionString = normalizeDatabaseUrl(envVariables.DATABASE_URL);
 
 const adapter = new PrismaPg({ connectionString });
 
