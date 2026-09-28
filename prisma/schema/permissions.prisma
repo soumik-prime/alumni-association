@@ -17,7 +17,7 @@ enum PermissionCategory {
 model Permission {
   key         String             @id @db.VarChar(100)
   description String?            @db.VarChar(160)
-  category    PermissionCategory
+  category    PermissionCategory?
 
   userPermissions UserPermission[]
   groupItems      PermissionGroupItem[]

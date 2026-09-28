@@ -1,4 +1,3 @@
-import "server-only";
 import { render } from "@react-email/render";
 import { ISendEmailOptions } from "./types";
 import { emailTransporter } from "./transporter";

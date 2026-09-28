@@ -1,10 +1,10 @@
-import "server-only";
-import "dotenv/config";
 import * as z from "zod";
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
+
   BETTER_AUTH_SECRET: z.string().min(1, "BETTER_AUTH_SECRET is required"),
+
   EMAIL_SENDER_SMTP_USER: z
     .string()
     .min(1, "EMAIL_SENDER_SMTP_USER is required"),

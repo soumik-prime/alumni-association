@@ -1,4 +1,3 @@
-import "server-only";
 import nodemailer from "nodemailer";
 import { envVariables } from "@/config/env";
 

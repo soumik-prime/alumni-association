@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma/prisma";
 
 if (!process.env.BOOTSTRAP_EMAIL || !process.env.BOOTSTRAP_NAME ) {
   throw new Error(
-    "BOOTSTRAP_EMAIL, BOOTSTRAP_NAME and SEED_ADMIN_PASSWORD are required to seed the database.",
+    "BOOTSTRAP_EMAIL, BOOTSTRAP_NAME are required to seed the database.",
   );
 }
 const bootstrapEmail: string = process.env.BOOTSTRAP_EMAIL;
