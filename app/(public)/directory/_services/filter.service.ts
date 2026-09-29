@@ -4,7 +4,7 @@ import {
   findCompanies,
   findCountries,
   findDistinctBatches,
-  findDistinctGraduationYears,
+  findGraduationDates,
   findDistinctSessions,
   findInstitutions,
 } from "../_repositories/filter.repository";
@@ -14,7 +14,7 @@ export async function getFilterOptions(): Promise<FilterOptionSet> {
   const [
     batches,
     sessions,
-    graduationYears,
+    graduationDates,
     countries,
     cities,
     institutions,
@@ -22,22 +22,27 @@ export async function getFilterOptions(): Promise<FilterOptionSet> {
   ] = await Promise.all([
     findDistinctBatches(),
     findDistinctSessions(),
-    findDistinctGraduationYears(),
+    findGraduationDates(),
     findCountries(),
     findCities(),
     findInstitutions(),
     findCompanies(),
   ]);
 
+
+
+  const graduationYears = [
+    ...new Set(
+      graduationDates.map(({ graduationDate }) => graduationDate?.getFullYear()).filter(Boolean),
+    ),
+  ];
+
   return {
     batchOptions: ["All batches", ...batches.map(({ batch }) => `${String(batch)}`)],
     sessionOptions: ["All sessions", ...sessions.map(({ session }) => session)],
     graduationYearOptions: [
       "Any year",
-      ...graduationYears
-        .map(({ graduationYear }) => graduationYear)
-        .filter((year): year is number => year !== null)
-        .map(String),
+      ...graduationYears.map(String),
     ],
     genderOptions: ["Any", "Male", "Female"],
     bloodGroupOptions: ["Any", ...Object.keys(enumMappings.bloodGroup)],

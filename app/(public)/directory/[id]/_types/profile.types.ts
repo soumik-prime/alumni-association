@@ -65,7 +65,7 @@ export interface Profile {
   regNo: string;
   batch: number;
   session: string;
-  graduationYear?: number;
+  graduationDate?: Date;
   photo: string;
   bio?: string;
   gender?: Gender;

@@ -19,11 +19,21 @@ export function findDistinctSessions() {
   });
 }
 
-export function findDistinctGraduationYears() {
+export function findGraduationDates() {
   return prisma.profile.findMany({
-    select: { graduationYear: true },
-    distinct: ["graduationYear"],
-    orderBy: { graduationYear: "asc" },
+    where: {
+      graduationDate: {
+        not: null,
+        lt: new Date(),
+      },
+    },
+    select: {
+      graduationDate: true,
+    },
+    distinct: ["graduationDate"],
+    orderBy: {
+      graduationDate: "asc",
+    },
   });
 }
 

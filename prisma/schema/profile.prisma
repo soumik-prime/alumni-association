@@ -25,7 +25,7 @@ model Profile {
   name           String
   batch          Int @db.SmallInt
   session        String @db.VarChar(7)
-  graduationYear Int?   @map("graduation_year") @db.SmallInt
+  graduationDate DateTime? @map("graduation_date") @db.Date
 
   photo         String?
   bio           String?

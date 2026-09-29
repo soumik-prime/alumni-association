@@ -10,7 +10,7 @@ const PROFILE_LIST_SELECT = {
   photo: true,
   batch: true,
   session: true,
-  graduationYear: true,
+  graduationDate: true,
   gender: true,
   bloodGroup: true,
   presentAddress: {

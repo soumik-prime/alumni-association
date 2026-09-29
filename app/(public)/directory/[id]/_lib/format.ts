@@ -78,15 +78,23 @@ export interface EnrollmentStatus {
 // that year has fully passed do we consider them alumni. This is the single
 // source of truth for student-vs-alumni status, derived from graduationYear
 // rather than duplicated as a separate stored flag.
-export function getEnrollmentStatus(graduationYear?: number): EnrollmentStatus {
-  const currentYear = new Date().getFullYear();
+export function getEnrollmentStatus(
+  graduationDate?: Date | null,
+): EnrollmentStatus {
+  const today = new Date();
+
   const isCurrentStudent =
-    graduationYear === undefined || graduationYear >= currentYear;
+    graduationDate === undefined ||
+    graduationDate === null ||
+    graduationDate >= today;
+
   return {
     isCurrentStudent,
     label:
-      graduationYear === undefined || isCurrentStudent
+      graduationDate === undefined ||
+      graduationDate === null ||
+      isCurrentStudent
         ? "Current Student"
-        : `Alumni · Class of ${graduationYear}`,
+        : `Alumni · Class of ${graduationDate.getFullYear()}`,
   };
 }

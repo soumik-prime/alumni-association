@@ -64,7 +64,7 @@ function getSocialLinks(profile: Profile) {
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
   const links = getSocialLinks(profile);
-  const status = getEnrollmentStatus(profile.graduationYear);
+  const status = getEnrollmentStatus(profile.graduationDate);
 
   return (
     <section className="overflow-hidden p-4 lg:pt-12 lg:pb-6">
@@ -107,8 +107,8 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
               <span
                 className={`inline-flex items-center gap-1.5 text-sm font-medium ${
                   status.isCurrentStudent
-                    ? "text-blue-700"
-                    : "text-emerald-700"
+                    ? "text-[#176B4D]"
+                    : "text-[#991925]"
                 }`}
               >
                 {status.isCurrentStudent ? (
