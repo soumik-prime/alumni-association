@@ -22,7 +22,6 @@ export function readIdentity(fd: FormData) {
   return {
     name: required(str(fd, "name"), "Name", 100),
     ...readAcademic(fd),
-    photo: optUrl(optStr(fd, "photo"), "Photo link"),
     bio: maxLen(optStr(fd, "bio"), "Bio", 1000),
     gender: optEnum(str(fd, "gender"), GENDER_LABEL, "gender"),
     bloodGroup: optEnum(str(fd, "bloodGroup"), BLOOD_GROUP_LABEL, "blood group"),

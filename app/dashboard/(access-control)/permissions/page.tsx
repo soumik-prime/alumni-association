@@ -1,6 +1,7 @@
 import PageTitle, { PageContainer } from "../../_components/PageTitle";
-import { Badge, Card, EmptyState, SectionHeader } from "../../_components/ui";
+import { AccessDenied, Badge, Card, EmptyState, SectionHeader } from "../../_components/ui";
 import { CATEGORY_LABEL } from "../../_constants/options";
+import { ACCESS_CONTROL_AREA } from "../../_constants/permissions";
 import { fmtDateTime } from "../../_lib/format";
 import { pageAccess } from "../../_lib/guards";
 import { getPermissionGrants } from "../../_lib/permissions";
@@ -8,6 +9,7 @@ import { prisma } from "@/lib/prisma/prisma";
 
 export default async function PermissionsPage() {
   const me = await pageAccess();
+  if (!me.can(...ACCESS_CONTROL_AREA)) return <AccessDenied />;
   const grants = await getPermissionGrants(me.userId);
   const defs = await prisma.permission.findMany({
     where: { key: { in: [...grants.keys()] } },

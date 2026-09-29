@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth/auth";
 import { generateSecurePassword } from "@/lib/auth/generate-password";
+import { sendWelcomeEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma/prisma";
 import { P } from "../_constants/permissions";
 import type { ActionState } from "../_lib/action-state";
@@ -17,7 +18,7 @@ const refresh = () => revalidatePath("/dashboard", "layout");
 
 /**
  * Create an account (name + email — both permanent), optionally with a
- * profile and group memberships. The generated password is returned once.
+ * profile and group memberships, then emails the generated password.
  *
  * Writes the user + credential account directly (hashing with better-auth's
  * own hasher) instead of calling `signUpEmail`, so the new user is NOT signed
@@ -64,7 +65,22 @@ export async function registerUser(_prev: ActionState, fd: FormData): Promise<Ac
     });
 
     refresh();
-    return { message: `Account created for ${email}.`, payload: { email, password, userId } };
+    try {
+      // Email is deliberately outside the transaction: SMTP is not transactional
+      // and must not keep database locks open.
+      await sendWelcomeEmail({ name, email, password });
+      return {
+        message: `Account created for ${email}. A temporary password was sent by email.`,
+        payload: { email, userId } as Record<string, string>,
+      };
+    } catch {
+      // The account already exists and the message may have been accepted by the
+      // provider despite an uncertain response, so never create it again here.
+      return {
+        message: `Account created for ${email}, but the password email could not be confirmed. Share this temporary password securely, then ask the member to change it.`,
+        payload: { email, password, userId } as Record<string, string>,
+      };
+    }
   });
 }
 

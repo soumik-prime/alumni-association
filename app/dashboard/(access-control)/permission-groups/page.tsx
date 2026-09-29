@@ -1,13 +1,13 @@
 import PageTitle, { PageContainer } from "../../_components/PageTitle";
 import GroupsManager from "../../_components/sections/GroupsManager";
 import { AccessDenied } from "../../_components/ui";
-import { P } from "../../_constants/permissions";
+import { ACCESS_CONTROL_AREA, P } from "../../_constants/permissions";
 import { pageAccess } from "../../_lib/guards";
 import { prisma } from "@/lib/prisma/prisma";
 
 export default async function PermissionGroupsPage() {
   const me = await pageAccess();
-  if (!me.can(P.groupsManage, P.groupsAssign, P.permGrant)) return <AccessDenied />;
+  if (!me.can(...ACCESS_CONTROL_AREA)) return <AccessDenied />;
 
   const [groups, permissions] = await Promise.all([
     prisma.permissionGroup.findMany({

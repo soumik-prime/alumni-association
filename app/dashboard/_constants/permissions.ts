@@ -49,3 +49,10 @@ export const NOTIFICATIONS_AREA: string[] = [
   P.notifDelete,
   P.notifPublish,
 ];
+
+/** Anyone who can grant permissions or manage/assign permission groups. */
+export const ACCESS_CONTROL_AREA: string[] = [
+  P.permGrant,
+  P.groupsManage,
+  P.groupsAssign,
+];

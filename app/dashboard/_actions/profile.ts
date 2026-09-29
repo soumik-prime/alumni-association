@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { profilePhotoPath, putProfilePhoto } from "@/lib/aws/s3";
 import { prisma } from "@/lib/prisma/prisma";
 import { P } from "../_constants/permissions";
 import type { ActionState } from "../_lib/action-state";
@@ -10,6 +11,9 @@ import { deleteProfileCascade } from "../_lib/profile-cleanup";
 import { readIdentity, readSocial } from "../_lib/profile-fields";
 
 const refresh = () => revalidatePath("/dashboard", "layout");
+
+const MAX_PROFILE_PHOTO_BYTES = 5 * 1024 * 1024;
+const PHOTO_CONTENT_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 
 /** Signed-in user creates their own profile (self only). */
 export async function createOwnProfile(_prev: ActionState, fd: FormData): Promise<ActionState> {
@@ -30,6 +34,22 @@ export async function updateProfile(profileId: string, _prev: ActionState, fd: F
     await prisma.profile.update({ where: { id: profileId }, data: readIdentity(fd) });
     refresh();
     return "Profile saved.";
+  });
+}
+
+/** Upload a profile photo to the private S3 bucket and expose it through the app. */
+export async function uploadProfilePhoto(profileId: string, _prev: ActionState, fd: FormData): Promise<ActionState> {
+  return run(async () => {
+    await authorizeProfile(profileId, P.profileEditOwn, P.profileEditAny);
+    const file = fd.get("photo");
+    need(file instanceof File && file.size > 0, "Choose an image to upload.");
+    need(PHOTO_CONTENT_TYPES.has(file.type), "Use a JPEG, PNG, WebP, or GIF image.");
+    need(file.size <= MAX_PROFILE_PHOTO_BYTES, "Profile photos must be 5 MB or smaller.");
+
+    await putProfilePhoto(profileId, new Uint8Array(await file.arrayBuffer()), file.type);
+    await prisma.profile.update({ where: { id: profileId }, data: { photo: profilePhotoPath(profileId) } });
+    refresh();
+    return "Profile photo uploaded.";
   });
 }
 

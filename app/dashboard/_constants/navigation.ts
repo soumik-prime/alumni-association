@@ -13,7 +13,7 @@ import {
   Users,
 } from "lucide-react";
 import type { NavSection } from "../_types/navigation";
-import { NOTIFICATIONS_AREA, P, USERS_AREA } from "./permissions";
+import { ACCESS_CONTROL_AREA, NOTIFICATIONS_AREA, USERS_AREA } from "./permissions";
 
 export const DASHBOARD_BASE_PATH = "/dashboard";
 export const DASHBOARD_HOME_PATH = `${DASHBOARD_BASE_PATH}/overview`;
@@ -47,8 +47,8 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Access Control",
     items: [
-      { label: "Permissions", href: `${DASHBOARD_BASE_PATH}/permissions`, icon: KeyRound },
-      { label: "Permission Groups", href: `${DASHBOARD_BASE_PATH}/permission-groups`, icon: FolderKey, permissions: [P.groupsManage, P.groupsAssign, P.permGrant] },
+      { label: "Permissions", href: `${DASHBOARD_BASE_PATH}/permissions`, icon: KeyRound, permissions: ACCESS_CONTROL_AREA },
+      { label: "Permission Groups", href: `${DASHBOARD_BASE_PATH}/permission-groups`, icon: FolderKey, permissions: ACCESS_CONTROL_AREA },
     ],
   },
 ];

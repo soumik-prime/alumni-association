@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
-    "prisma:seed": "tsx scripts/seed.ts",
+    "prisma:seed": "tsx --env-file=.env scripts/seed.ts",
     "prisma:seed:testdata": "prisma db execute --file ./seed/testdata.sql",
     "prisma:migrate": "prisma migrate dev && prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",

@@ -4,14 +4,15 @@ import type { FormAction } from "../../_lib/action-state";
 import { toDateInput } from "../../_lib/format";
 import { Card, Field, Grid, Input, Notice, Select, SectionHeader, Textarea } from "../ui";
 import ActionForm from "../ui/ActionForm";
+import ProfilePhotoUploader from "./ProfilePhotoUploader";
 
 const GENDERS = toOptions(GENDER_LABEL);
 const BLOODS = toOptions(BLOOD_GROUP_LABEL);
 
 /** Create (profile = null) or edit a profile's identity + academic fields. */
 export default function ProfileForm({
-  profile, action, canEdit = true, title = "Profile",
-}: { profile: Profile | null; action: FormAction; canEdit?: boolean; title?: string }) {
+  profile, action, photoAction, canEdit = true, title = "Profile",
+}: { profile: Profile | null; action: FormAction; photoAction?: FormAction; canEdit?: boolean; title?: string }) {
   return (
     <Card>
       <SectionHeader
@@ -37,12 +38,12 @@ export default function ProfileForm({
           <Field label="Batch"><Input name="batch" type="number" min={1} max={500} defaultValue={profile?.batch ?? ""} required /></Field>
           <Field label="Session" hint="e.g. 2021-22"><Input name="session" defaultValue={profile?.session ?? ""} required maxLength={7} placeholder="2021-22" /></Field>
           <Field label="Graduation date"><Input name="graduationDate" type="date" defaultValue={toDateInput(profile?.graduationDate)} /></Field>
-          <Field label="Photo link" hint="Link to an image (https://…)"><Input name="photo" type="url" defaultValue={profile?.photo ?? ""} /></Field>
           <Field label="Gender"><Select name="gender" options={GENDERS} placeholder="Prefer not to say" defaultValue={profile?.gender ?? ""} /></Field>
           <Field label="Blood group"><Select name="bloodGroup" options={BLOODS} placeholder="Not specified" defaultValue={profile?.bloodGroup ?? ""} /></Field>
         </Grid>
         <Field label="Bio"><Textarea name="bio" defaultValue={profile?.bio ?? ""} maxLength={1000} /></Field>
       </ActionForm>
+      {profile && photoAction && canEdit && <div className="mt-4"><ProfilePhotoUploader photo={profile.photo} action={photoAction} /></div>}
     </Card>
   );
 }

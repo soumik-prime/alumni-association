@@ -31,7 +31,7 @@ export default function RegisterUserForm({
             {s.payload?.password && (
               <div className="mt-2 space-y-1">
                 <p>
-                  Temporary password (shown once — share it securely):{" "}
+                  Temporary password (shown once — the email could not be confirmed; share it securely):{" "}
                   <code className="select-all rounded bg-white px-1.5 py-0.5 font-mono text-[13px] text-[var(--neu-gray-800)]">
                     {s.payload.password}
                   </code>

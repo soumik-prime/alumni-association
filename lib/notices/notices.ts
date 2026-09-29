@@ -15,6 +15,7 @@ export async function getActiveSiteNotices(): Promise<SiteNotice[]> {
   const notices = await prisma.siteNotification.findMany({
     where: {
       active: true,
+      AND: [{ OR: [{ startsAt: null }, { startsAt: { lte: now } }] }],
       OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
     },
     orderBy: { createdAt: "asc" },

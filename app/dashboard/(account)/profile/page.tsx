@@ -2,7 +2,7 @@ import PageTitle, { PageContainer } from "../../_components/PageTitle";
 import ProfileForm from "../../_components/sections/ProfileForm";
 import VisibilityCard from "../../_components/sections/VisibilityCard";
 import { Notice } from "../../_components/ui";
-import { createOwnProfile, updateProfile } from "../../_actions/profile";
+import { createOwnProfile, updateProfile, uploadProfilePhoto } from "../../_actions/profile";
 import { P } from "../../_constants/permissions";
 import { pageAccess } from "../../_lib/guards";
 import { getOwnProfile } from "../../_lib/queries";
@@ -26,6 +26,7 @@ export default async function ProfilePage() {
           <ProfileForm
             profile={profile}
             action={updateProfile.bind(null, profile.id)}
+            photoAction={uploadProfilePhoto.bind(null, profile.id)}
             canEdit={me.can(P.profileEditOwn, P.profileEditAny)}
           />
           <VisibilityCard profileId={profile.id} visible={profile.visible} canToggle={me.can(P.profileVisibility)} />
